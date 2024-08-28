@@ -5,8 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],  // Cambia a styleUrls (en plural)
 })
+
 export class LoginComponent {
   constructor(
     private authService: AuthService,
