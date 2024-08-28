@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SupplierService } from '../../services/supplier.service';
-
+import { DataTable } from "simple-datatables";
 
 interface Supplier {
   supplierId: number;
@@ -22,11 +22,23 @@ export class ProveedoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.supplierService.getSuppliers().subscribe((data: Supplier[]) => {
-      console.log('Data received:', data); // <-- Aquí para ver los datos en la consola
-      this.suppliers = data;
-    }, error => {
-      console.error('Error fetching suppliers:', error);
+        this.suppliers = data;
+
+        // Usamos setTimeout para garantizar que la tabla esté en el DOM
+        setTimeout(() => {
+            this.initializeDataTable();
+        }, 10);
     });
   }
-  
+
+
+  initializeDataTable(): void {
+      const tableElement = document.getElementById("search-table") as HTMLTableElement;
+      if (tableElement) {
+          const dataTable = new DataTable(tableElement, {
+              searchable: true,
+              sortable: true
+          });
+      }
+  }
 }
