@@ -6,11 +6,16 @@ import { VentasComponent } from './components/ventas/ventas.component';
 import { InventariosComponent } from './components/inventarios/inventarios.component';
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './services/auth.guard';
+
 
 const routes: Routes = [
+  { path: '', component: LoginComponent },
   {
-    path: '',
+    path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -20,6 +25,7 @@ const routes: Routes = [
       { path: 'clientes', component: ClientesComponent },
     ],
   },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
