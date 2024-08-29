@@ -1,4 +1,13 @@
-<div class="login-container">
-  <h1>Iniciar Sesión</h1>
-  <button (click)="login()">Login with Google</button>
+<div class="login-wrapper">
+  <div class="login-container">
+    <img src="../../assets/Logo.png" alt="Ana Gourmet Logo" class="logo" />
+    <h2>Bienvenido a Anagourmet Administrator</h2>
+    <form>
+      <input type="email" placeholder="Ingresar correo electrónico" class="input-field" />
+      <input type="password" placeholder="Ingresar contraseña" class="input-field" />
+      <button type="submit" class="login-button">Iniciar sesión</button>
+    </form>
+    <button class="google-login-button" (click)="login()">Iniciar sesión con Google</button>
+    <p>Por favor inicia sesión con tu cuenta administrativa</p>
+  </div>
 </div>
