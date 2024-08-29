@@ -11,9 +11,14 @@ import { InventariosComponent } from './components/inventarios/inventarios.compo
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { HomeComponent } from './components/home/home.component';
-import { provideHttpClient } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
+import { provideHttpClient, withInterceptors } from '@angular/common/http'; // Importar 'withInterceptors' si usas interceptores
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+// Función para obtener el token desde localStorage
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -28,10 +33,25 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     HomeComponent,
     LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, OAuthModule.forRoot()],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    OAuthModule.forRoot(),
+  ],
   providers: [
-    provideHttpClient(), // Configuración del HttpClient
-    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, // Configuración para JwtHelperService
+    provideHttpClient(
+      withInterceptors([
+        // Aquí puedes agregar interceptores si los necesitas
+      ])
+    ),
+    { 
+      provide: JWT_OPTIONS, 
+      useValue: { 
+        tokenGetter: tokenGetter, 
+        allowedDomains: ['localhost:4200'], // Ajusta según tu dominio si es necesario
+        disallowedRoutes: ['localhost:4200/api/auth'], // Rutas donde no quieres enviar el token
+      } 
+    },
     JwtHelperService, // Proveedor para JwtHelperService
   ],
   bootstrap: [AppComponent],

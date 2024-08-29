@@ -16,18 +16,26 @@ export class LoginComponent {
   ) {}
 
   ngOnInit(): void {
-    // Verifica si hay un token en los parámetros de la URL
+    console.log('ngOnInit - LoginComponent');
     this.route.queryParams.subscribe((params) => {
+      console.log('Query Params:', params);
       const token = params['token'];
       if (token) {
+        console.log('Token found:', token);
         // Guarda el token en localStorage
         localStorage.setItem('token', token);
-
+  
         // Redirige al usuario a la página principal o a un componente específico
-        this.router.navigate(['/cliente']); // O cualquier otro componente que quieras
+        this.router.navigate(['/home']); // O cualquier otro componente que quieras
+      } else {
+        console.log('Token not found');
       }
     });
   }
+  
+  
+                    
+  
 
   login() {
     // Llama al método de login en AuthService que redirige al usuario al backend para autenticarse

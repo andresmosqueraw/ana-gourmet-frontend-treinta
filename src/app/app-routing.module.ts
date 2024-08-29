@@ -9,20 +9,23 @@ import { ClientesComponent } from './components/clientes/clientes.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 
-
 const routes: Routes = [
   { path: '', component: LoginComponent },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      { path: 'ventas', component: VentasComponent },
-      { path: 'inventarios', component: InventariosComponent },
-      { path: 'proveedores', component: ProveedoresComponent },
-      { path: 'clientes', component: ClientesComponent },
+      { path: 'ventas', component: VentasComponent, canActivate: [AuthGuard] },
+      { path: 'inventarios', component: InventariosComponent, canActivate: [AuthGuard] },
+      { path: 'proveedores', component: ProveedoresComponent, canActivate: [AuthGuard] },
+      { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard] },
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

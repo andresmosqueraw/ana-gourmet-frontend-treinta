@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service'; // Asegúrate de que la ruta sea correcta
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private router: Router,
+    private jwtHelper: JwtHelperService
+  ) {}
 
   canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
-      return true;
+    const token = localStorage.getItem('token');
+
+    // Verifica si el token existe y no ha expirado
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      return true; // Permite el acceso a la ruta
     } else {
+      // Redirige al login si el token no es válido o no existe
       this.router.navigate(['/']);
       return false;
     }
