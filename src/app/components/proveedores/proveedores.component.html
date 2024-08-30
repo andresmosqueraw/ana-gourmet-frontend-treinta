@@ -1,7 +1,7 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-semibold mb-4">Lista de Proveedores</h1>
 
-    <!-- Botón para abrir el modal -->
+    <!-- Botón para abrir el modal de creación -->
     <button (click)="openModal()" class="mb-4 bg-blue-500 text-white px-4 py-2 rounded">Crear Proveedor</button>
 
     <table id="search-table" class="min-w-full bg-white">
@@ -12,6 +12,8 @@
                 <th><span class="flex items-center">Producto</span></th>
                 <th><span class="flex items-center">Teléfono</span></th>
                 <th><span class="flex items-center">Fecha de Creación</span></th>
+                <th><span class="flex items-center">Acciones</span></th>
+                <th><span class="flex items-center">Eliminar</span></th>
             </tr>
         </thead>
         <tbody>
@@ -21,12 +23,18 @@
                 <td class="whitespace-nowrap">{{ supplier.suppliedProduct }}</td>
                 <td class="whitespace-nowrap">{{ supplier.phone }}</td>
                 <td class="whitespace-nowrap">{{ supplier.createdAt | date:'short' }}</td>
+                <td class="whitespace-nowrap">
+                    <button (click)="editSupplier(supplier.supplierId)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
+                </td>
+                <td class="whitespace-nowrap">
+                    <button (click)="deleteSupplier(supplier.supplierId)" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<!-- Modal -->
+<!-- Modal para crear/editar proveedor -->
 <div *ngIf="showModal" class="fixed z-10 inset-0 overflow-y-auto">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity">
@@ -35,7 +43,7 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Crear Proveedor</h3>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">{{ isEditMode ? 'Editar Proveedor' : 'Crear Proveedor' }}</h3>
                 <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
                     <div>
                         <label class="block text-gray-700">Nombre</label>
@@ -50,7 +58,7 @@
                         <input formControlName="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
                     </div>
                     <div class="mt-5 sm:mt-6">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
                         <button type="button" (click)="closeModal()" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
                     </div>
                 </form>

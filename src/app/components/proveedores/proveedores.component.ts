@@ -22,6 +22,8 @@ export class ProveedoresComponent implements OnInit {
   suppliers: Supplier[] = [];
   supplierForm: FormGroup;
   showModal: boolean = false;
+  isEditMode: boolean = false;
+  selectedSupplierId: number | null = null;
 
   constructor(private supplierService: SupplierService, private fb: FormBuilder) { 
     this.supplierForm = this.fb.group({
@@ -34,6 +36,10 @@ export class ProveedoresComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadSuppliers();
+  }
+
+  loadSuppliers(): void {
     this.supplierService.getSuppliers().subscribe((data: Supplier[]) => {
         this.suppliers = data;
 
@@ -54,30 +60,70 @@ export class ProveedoresComponent implements OnInit {
     }
   }
 
-  openModal(): void {
+  openModal(isEditMode = false): void {
     this.showModal = true;
+    this.isEditMode = isEditMode;
+    if (!isEditMode) {
+      this.supplierForm.reset({
+        userId: '1',
+        statusSupplier: '1'
+      });
+      this.selectedSupplierId = null;
+    }
   }
 
   closeModal(): void {
     this.showModal = false;
+    this.selectedSupplierId = null;
   }
 
   onSubmit(): void {
     if (this.supplierForm.valid) {
-      // Obtener la fecha y hora actual en la zona horaria local
-      const now = new Date();
-      const timezoneOffset = now.getTimezoneOffset() * 60000; // offset en milisegundos
-      const localISOTime = new Date(now.getTime() - timezoneOffset).toISOString().slice(0, -1);
+      const now = new Date().toISOString(); // Establece la fecha actual
 
       const supplierData = {
         ...this.supplierForm.value,
-        createdAt: localISOTime
+        createdAt: now  // Asigna la fecha actual
       };
 
-      this.supplierService.createSupplier(supplierData).subscribe(() => {
-        this.closeModal();
-        window.location.reload();  // Recarga la página después de crear el proveedor
+      if (this.isEditMode && this.selectedSupplierId !== null) {
+        // Actualizar proveedor
+        this.supplierService.updateSupplier(this.selectedSupplierId, supplierData).subscribe(() => {
+          // this.loadSuppliers();
+          this.closeModal();
+        });
+        window.location.reload();
+      } else {
+        // Crear nuevo proveedor
+        this.supplierService.createSupplier(supplierData).subscribe(() => {
+          // this.loadSuppliers();
+          this.closeModal();
+          window.location.reload();
+        });
+      }
+    }
+  }
+
+  editSupplier(id: number): void {
+    this.selectedSupplierId = id;
+    this.supplierService.getSupplierById(id).subscribe((supplier: Supplier) => {
+      this.openModal(true);
+      this.supplierForm.patchValue({
+        supplierName: supplier.supplierName,
+        suppliedProduct: supplier.suppliedProduct,
+        phone: supplier.phone,
+        userId: supplier.userId,
+        statusSupplier: supplier.statusSupplier
       });
+    });
+  }
+
+  deleteSupplier(id: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
+      this.supplierService.deleteSupplier(id).subscribe(() => {
+        // this.loadSuppliers();
+      });
+      window.location.reload();
     }
   }
 }
