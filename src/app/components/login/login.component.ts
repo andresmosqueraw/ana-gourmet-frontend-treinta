@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['error'] === 'invalid_email') {
+        this.errorMessage = 'Error: Correo electrónico no válido para ingreso';
+      }
+    });
+  }
 
   login() {
-    console.log('Login button clicked'); // Verifica si el método se llama
-    this.authService.login();
+    this.authService.login(); // Solo redirige al usuario a la URL de autenticación
   }
 
   // Método para eliminar las cookies relevantes
