@@ -10,6 +10,20 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column; /* Alineación vertical de los elementos */
+}
+
+.error-message {
+  color: white;
+  background-color: #ff4c4c;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 80%;
+  max-width: 400px; /* Ajuste para que coincida con el ancho del contenedor de login */
+  font-weight: bold;
+  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
 }
 
 .login-container {
@@ -56,6 +70,23 @@ h2 {
 
 .login-button:hover {
   background-color: #e0a800; /* Cambio de color al pasar el cursor */
+}
+
+.google-login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #db4437;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.google-login-button:hover {
+  background-color: #c23321;
 }
 
 p {

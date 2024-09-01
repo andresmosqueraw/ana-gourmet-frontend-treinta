@@ -1,4 +1,8 @@
 <div class="login-wrapper">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
   <div class="login-container">
     <img src="../../assets/Logo.png" alt="Ana Gourmet Logo" class="logo" />
     <h2>Bienvenido a Anagourmet Administrator</h2>
