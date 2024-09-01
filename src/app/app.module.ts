@@ -13,6 +13,7 @@ import { ProveedoresComponent } from './components/proveedores/proveedores.compo
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { HomeComponent } from './components/home/home.component';
 import { provideHttpClient } from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { provideHttpClient } from '@angular/common/http';
     InventariosComponent,
     ProveedoresComponent,
     ClientesComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
