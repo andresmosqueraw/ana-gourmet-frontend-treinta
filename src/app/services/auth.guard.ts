@@ -13,14 +13,16 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     const token = localStorage.getItem('token');
-
-    // Verifica si el token existe y no ha expirado
+    console.log('Token:', token);
+  
     if (token && !this.jwtHelper.isTokenExpired(token)) {
-      return true; // Permite el acceso a la ruta
+      console.log('Token is valid');
+      return true;
     } else {
-      // Redirige al login si el token no es válido o no existe
+      console.log('Token is invalid or expired');
       this.router.navigate(['/']);
       return false;
     }
   }
+  
 }

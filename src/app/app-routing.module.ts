@@ -21,11 +21,11 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'ventas', component: VentasComponent, canActivate: [AuthGuard] },
-      { path: 'inventarios', component: InventariosComponent, canActivate: [AuthGuard] },
-      { path: 'proveedores', component: ProveedoresComponent, canActivate: [AuthGuard] },
-      { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard] },
+      { path: 'clientes', component: ClientesComponent },
+      { path: 'ventas', component: VentasComponent },
+      { path: 'inventarios', component: InventariosComponent },
+      { path: 'proveedores', component: ProveedoresComponent },
+      { path: '', redirectTo: 'clientes', pathMatch: 'full' }, // Opcional: redirige a /dashboard/clientes si se accede a /dashboard
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
