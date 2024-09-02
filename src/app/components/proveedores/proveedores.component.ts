@@ -193,12 +193,18 @@ export class ProveedoresComponent implements OnInit {
       if (this.isEditMode && this.selectedSupplierId !== null) {
         // Actualizar proveedor
         this.supplierService.updateSupplier(this.selectedSupplierId, supplierData).subscribe(() => {
+
+          this.loadSuppliers();
+
           this.closeModal();
         });
         window.location.reload();
       } else {
         // Crear nuevo proveedor
         this.supplierService.createSupplier(supplierData).subscribe(() => {
+
+          this.loadSuppliers();
+
           this.closeModal();
           window.location.reload();
         });
