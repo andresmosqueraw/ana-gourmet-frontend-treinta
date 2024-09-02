@@ -6,10 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private router: Router,
-    private jwtHelper: JwtHelperService
-  ) {}
+  constructor(private router: Router, private jwtHelper: JwtHelperService) {}
 
   canActivate(): boolean {
     const token = localStorage.getItem('token');
@@ -19,7 +16,11 @@ export class AuthGuard implements CanActivate {
       return true; // Permite el acceso a la ruta
     } else {
       // Redirige al login si el token no es válido o no existe
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        queryParams: {
+          error: 'expired_or_invalid_token', // Se añade un parámetro para informar que el token es inválido o ha expirado
+        },
+      });
       return false;
     }
   }
