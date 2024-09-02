@@ -11,6 +11,7 @@
                 <th><span class="flex items-center">Producto</span></th>
                 <th><span class="flex items-center">Cantidad</span></th>
                 <th><span class="flex items-center">Precio Unitario</span></th>
+                <th><span class="flex items-center">Proveedor</span></th>
                 <th><span class="flex items-center">Fecha de Creación</span></th>
                 <th><span class="flex items-center">Acciones</span></th>
                 <th><span class="flex items-center">Eliminar</span></th>
@@ -22,6 +23,7 @@
                 <td class="whitespace-nowrap">{{ inventory.productName }}</td>
                 <td class="whitespace-nowrap">{{ inventory.quantity }}</td>
                 <td class="whitespace-nowrap">{{ inventory.unitPrice | currency }}</td>
+                <td class="whitespace-nowrap">{{ inventory.supplierId}}</td>
                 <td class="whitespace-nowrap">{{ inventory.createdAt | date:'short' }}</td>
                 <td class="whitespace-nowrap">
                     <button (click)="editInventory(inventory.productId)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
@@ -47,22 +49,38 @@
                 <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
                     <div>
                         <label class="block text-gray-700">Producto</label>
-                        <input formControlName="productName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <select formControlName="productName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                            <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+                        </select>
+                        <div *ngIf="inventoryForm.get('productName')?.invalid && inventoryForm.get('productName')?.touched" class="text-red-500 text-sm mt-1">
+                            Seleccione un producto válido.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Cantidad</label>
                         <input formControlName="quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <div *ngIf="inventoryForm.get('quantity')?.invalid && inventoryForm.get('quantity')?.touched" class="text-red-500 text-sm mt-1">
+                            La cantidad debe estar entre 1 y 100.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Precio Unitario</label>
                         <input formControlName="unitPrice" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <div *ngIf="inventoryForm.get('unitPrice')?.invalid && inventoryForm.get('unitPrice')?.touched" class="text-red-500 text-sm mt-1">
+                            El precio unitario debe estar entre 2,000 y 20,000.
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Proveedor ID</label>
-                        <input formControlName="supplierId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
-                    </div>
+                        <label class="block text-gray-700">Nombre Proveedor</label>
+                        <select formControlName="supplierName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                            <option *ngFor="let supplier of suppliers" [value]="supplier.supplierName">{{ supplier.supplierName }}</option>
+                        </select>
+                        <div *ngIf="inventoryForm.get('supplierName')?.invalid && inventoryForm.get('supplierName')?.touched" class="text-red-500 text-sm mt-1">
+                            Selecciona un nombre de proveedor válido.
+                        </div>
+                    </div>                    
                     <div class="mt-5 sm:mt-6">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
+                        <button type="submit" [disabled]="inventoryForm.invalid" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
                         <button type="button" (click)="closeModal()" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
                     </div>
                 </form>

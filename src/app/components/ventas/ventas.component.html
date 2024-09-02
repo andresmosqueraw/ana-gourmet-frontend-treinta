@@ -19,17 +19,17 @@
         </thead>
         <tbody>
             <tr *ngFor="let sale of sales">
-                <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sale.saleId }}</td>
+                <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sale.id }}</td>
                 <td class="whitespace-nowrap">{{ sale.customerId }}</td>
                 <td class="whitespace-nowrap">{{ sale.typeLunch }}</td>
                 <td class="whitespace-nowrap">{{ sale.quantity }}</td>
                 <td class="whitespace-nowrap">{{ sale.totalSale | currency }}</td>
                 <td class="whitespace-nowrap">{{ sale.saleDate }}</td>
                 <td class="whitespace-nowrap">
-                    <button (click)="editSale(sale.saleId)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
+                    <button (click)="editSale(sale.id)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
                 </td>
                 <td class="whitespace-nowrap">
-                    <button (click)="deleteSale(sale.saleId)" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
+                    <button (click)="deleteSale(sale.id)" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
                 </td>
             </tr>
         </tbody>
@@ -50,25 +50,38 @@
                     <div>
                         <label class="block text-gray-700">Cliente ID</label>
                         <input formControlName="customerId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <div *ngIf="saleForm.get('customerId')?.invalid && saleForm.get('customerId')?.touched" class="text-red-500 text-sm mt-1">
+                            Cliente ID no es válido.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Tipo de Almuerzo</label>
-                        <input formControlName="typeLunch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <select formControlName="typeLunch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                            <option value="">Seleccione una opción</option>
+                            <option value="Corriente">Corriente</option>
+                            <option value="Ejecutivo">Ejecutivo</option>
+                        </select>
+                        <div *ngIf="saleForm.get('typeLunch')?.invalid && saleForm.get('typeLunch')?.touched" class="text-red-500 text-sm mt-1">
+                            Seleccione un tipo de almuerzo válido.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Cantidad</label>
-                        <input formControlName="quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <input formControlName="quantity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required (input)="calculateTotalSale()">
+                        <div *ngIf="saleForm.get('quantity')?.invalid && saleForm.get('quantity')?.touched" class="text-red-500 text-sm mt-1">
+                            La cantidad debe estar entre 1 y 10.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Total Venta</label>
-                        <input formControlName="totalSale" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <input formControlName="totalSale" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" [disabled]="true">
                     </div>
                     <div>
                         <label class="block text-gray-700">Fecha de Venta</label>
                         <input formControlName="saleDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="date" required>
                     </div>
                     <div class="mt-5 sm:mt-6">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
+                        <button type="submit" [disabled]="saleForm.invalid" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
                         <button type="button" (click)="closeModal()" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
                     </div>
                 </form>

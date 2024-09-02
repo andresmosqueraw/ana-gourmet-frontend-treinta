@@ -20,7 +20,7 @@
             <tr *ngFor="let supplier of suppliers">
                 <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ supplier.supplierId }}</td>
                 <td class="whitespace-nowrap">{{ supplier.supplierName }}</td>
-                <td class="whitespace-nowrap">{{ supplier.suppliedProduct }}</td>
+                <td class="whitespace-nowrap">{{ supplier.supplierProduct }}</td>
                 <td class="whitespace-nowrap">{{ supplier.phone }}</td>
                 <td class="whitespace-nowrap">{{ supplier.createdAt | date:'short' }}</td>
                 <td class="whitespace-nowrap">
@@ -48,14 +48,25 @@
                     <div>
                         <label class="block text-gray-700">Nombre</label>
                         <input formControlName="supplierName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <div *ngIf="supplierForm.get('supplierName')?.touched && supplierForm.get('supplierName')?.invalid" class="text-red-500">
+                            El nombre es requerido y debe contener al menos 2 caracteres solo con letras.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Producto</label>
-                        <input formControlName="suppliedProduct" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <select formControlName="supplierProduct" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                            <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+                        </select>
+                        <div *ngIf="supplierForm.get('supplierProduct')?.touched && supplierForm.get('supplierProduct')?.invalid" class="text-red-500">
+                            Selecciona un producto válido.
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700">Teléfono</label>
-                        <input formControlName="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <input formControlName="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="number" required>
+                        <div *ngIf="supplierForm.get('phone')?.touched && supplierForm.get('phone')?.invalid" class="text-red-500">
+                            El número de teléfono debe contener exactamente 10 dígitos.
+                        </div>
                     </div>
                     <div class="mt-5 sm:mt-6">
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>

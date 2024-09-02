@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 interface Supplier {
   supplierId: number;
   supplierName: string;
-  suppliedProduct: string;
+  supplierProduct: string;
   phone: string;
   createdAt: string;
   userId: string;
