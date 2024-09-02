@@ -1,0 +1,17 @@
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.nav-button {
+  width: 150px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  opacity: 0.8;
+}
