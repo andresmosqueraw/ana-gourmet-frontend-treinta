@@ -20,7 +20,7 @@
             <tr *ngFor="let supplier of suppliers">
                 <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ supplier.supplierId }}</td>
                 <td class="whitespace-nowrap">{{ supplier.supplierName }}</td>
-                <td class="whitespace-nowrap">{{ supplier.suppliedProduct }}</td>
+                <td class="whitespace-nowrap">{{ supplier.supplierProduct }}</td>
                 <td class="whitespace-nowrap">{{ supplier.phone }}</td>
                 <td class="whitespace-nowrap">{{ supplier.createdAt | date:'short' }}</td>
                 <td class="whitespace-nowrap">
@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700">Producto</label>
-                        <input formControlName="suppliedProduct" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
+                        <input formControlName="supplierProduct" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" type="text" required>
                     </div>
                     <div>
                         <label class="block text-gray-700">Teléfono</label>

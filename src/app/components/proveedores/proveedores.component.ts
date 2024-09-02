@@ -6,7 +6,7 @@ import { DataTable } from "simple-datatables";
 interface Supplier {
   supplierId: number;
   supplierName: string;
-  suppliedProduct: string;
+  supplierProduct: string;
   phone: string;
   createdAt: string;
   userId: string;
@@ -28,7 +28,7 @@ export class ProveedoresComponent implements OnInit {
   constructor(private supplierService: SupplierService, private fb: FormBuilder) { 
     this.supplierForm = this.fb.group({
       supplierName: ['', Validators.required],
-      suppliedProduct: ['', Validators.required],
+      supplierProduct: ['', Validators.required],
       phone: ['', Validators.required],
       userId: ['1', Validators.required],  // Valor por defecto
       statusSupplier: ['1', Validators.required]  // Valor por defecto
@@ -110,7 +110,7 @@ export class ProveedoresComponent implements OnInit {
       this.openModal(true);
       this.supplierForm.patchValue({
         supplierName: supplier.supplierName,
-        suppliedProduct: supplier.suppliedProduct,
+        supplierProduct: supplier.supplierProduct,
         phone: supplier.phone,
         userId: supplier.userId,
         statusSupplier: supplier.statusSupplier
