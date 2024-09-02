@@ -11,6 +11,7 @@
                 <th><span class="flex items-center">Producto</span></th>
                 <th><span class="flex items-center">Cantidad</span></th>
                 <th><span class="flex items-center">Precio Unitario</span></th>
+                <th><span class="flex items-center">Proveedor</span></th>
                 <th><span class="flex items-center">Fecha de Creación</span></th>
                 <th><span class="flex items-center">Acciones</span></th>
                 <th><span class="flex items-center">Eliminar</span></th>
@@ -22,6 +23,7 @@
                 <td class="whitespace-nowrap">{{ inventory.productName }}</td>
                 <td class="whitespace-nowrap">{{ inventory.quantity }}</td>
                 <td class="whitespace-nowrap">{{ inventory.unitPrice | currency }}</td>
+                <td class="whitespace-nowrap">{{ inventory.supplierId}}</td>
                 <td class="whitespace-nowrap">{{ inventory.createdAt | date:'short' }}</td>
                 <td class="whitespace-nowrap">
                     <button (click)="editInventory(inventory.productId)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>

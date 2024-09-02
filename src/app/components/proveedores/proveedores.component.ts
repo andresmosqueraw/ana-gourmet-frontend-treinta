@@ -208,6 +208,7 @@ export class ProveedoresComponent implements OnInit {
           this.closeModal();
           window.location.reload();
         });
+        window.location.reload();
       }
     } else {
       // Marcar todos los campos como tocados para mostrar los mensajes de error

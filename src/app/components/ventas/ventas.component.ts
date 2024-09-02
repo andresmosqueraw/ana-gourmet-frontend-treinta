@@ -107,11 +107,13 @@ export class VentasComponent implements OnInit {
           this.loadSales();
           this.closeModal();
         });
+        window.location.reload();
       } else {
         this.saleService.createSale(saleData).subscribe(() => {
           this.loadSales();
           this.closeModal();
         });
+        window.location.reload();
       }
     } else {
       this.saleForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar los errores

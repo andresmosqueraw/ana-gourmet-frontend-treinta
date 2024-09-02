@@ -214,11 +214,13 @@ export class InventariosComponent implements OnInit {
           this.closeModal();
           window.location.reload();
         });
+        window.location.reload();
       } else {
         this.inventoryService.createInventory(inventoryData).subscribe(() => {
           this.closeModal();
           window.location.reload();
         });
+        window.location.reload();
       }
     }
   }  
