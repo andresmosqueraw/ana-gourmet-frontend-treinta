@@ -26,14 +26,23 @@ export class InventariosComponent implements OnInit {
   isEditMode: boolean = false;
   selectedInventoryId: number | null = null;
 
+  // Define la lista de productos aquí
+  products = [
+    { id: 1, name: 'Papas' },
+    { id: 2, name: 'Tomates' },
+    { id: 3, name: 'Cebollas' },
+    { id: 4, name: 'Zanahorias' },
+    // Agrega más productos según sea necesario
+  ];
+
   constructor(private inventoryService: InventoryService, private fb: FormBuilder) { 
     this.inventoryForm = this.fb.group({
       productName: ['', Validators.required],
-      quantity: ['', Validators.required],
-      unitPrice: ['', Validators.required],
-      supplierId: ['', Validators.required],
-      userId: ['1', Validators.required],  // Valor por defecto
-      statusInventory: ['1', Validators.required]  // Valor por defecto
+      quantity: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+      unitPrice: ['', [Validators.required, Validators.min(2000), Validators.max(20000)]],
+      supplierId: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
+      userId: ['1', Validators.required],
+      statusInventory: ['1', Validators.required]
     });
   }
 
@@ -45,7 +54,6 @@ export class InventariosComponent implements OnInit {
     this.inventoryService.getInventories().subscribe((data: Inventory[]) => {
         this.inventories = data;
 
-        // Usamos setTimeout para garantizar que la tabla esté en el DOM
         setTimeout(() => {
             this.initializeDataTable();
         }, 10);
@@ -81,21 +89,19 @@ export class InventariosComponent implements OnInit {
 
   onSubmit(): void {
     if (this.inventoryForm.valid) {
-      const now = new Date().toISOString(); // Establece la fecha actual
+      const now = new Date().toISOString();
 
       const inventoryData = {
         ...this.inventoryForm.value,
-        createdAt: now  // Asigna la fecha actual
+        createdAt: now
       };
 
       if (this.isEditMode && this.selectedInventoryId !== null) {
-        // Actualizar inventario
         this.inventoryService.updateInventory(this.selectedInventoryId, inventoryData).subscribe(() => {
           this.closeModal();
+          window.location.reload();
         });
-        window.location.reload();
       } else {
-        // Crear nuevo inventario
         this.inventoryService.createInventory(inventoryData).subscribe(() => {
           window.location.reload();
           this.closeModal();
@@ -124,7 +130,6 @@ export class InventariosComponent implements OnInit {
       this.inventoryService.deleteInventory(id).subscribe(() => {
         window.location.reload();
       });
-      window.location.reload();
     }
   }
 }

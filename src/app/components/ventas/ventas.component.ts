@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SaleService } from '../../services/sale.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataTable } from "simple-datatables";
 
 interface Sale {
@@ -27,16 +27,21 @@ export class VentasComponent implements OnInit {
   isEditMode: boolean = false;
   selectedSaleId: number | null = null;
 
+  existingCustomerIds: number[] = [1, 2, 3, 4, 5]; // Ejemplo de IDs de clientes existentes
+
   constructor(private saleService: SaleService, private fb: FormBuilder) { 
     this.saleForm = this.fb.group({
-      customerId: ['', Validators.required],
-      typeLunch: ['', Validators.required],
-      quantity: ['', Validators.required],
-      totalSale: ['', Validators.required],
-      saleDate: ['', Validators.required],
-      userId: ['1', Validators.required],  // Valor por defecto
-      statusSales: ['1', Validators.required]  // Valor por defecto
+      customerId: ['', [Validators.required, Validators.min(1), this.customerIdValidator.bind(this)]],
+      typeLunch: ['', [Validators.required, this.typeLunchValidator]],
+      quantity: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
+      totalSale: [{ value: '', disabled: true }, Validators.required],
+      saleDate: [{ value: '', disabled: true }, Validators.required],
+      userId: ['1', Validators.required],
+      statusSales: ['1', Validators.required]
     });
+
+    // Establecer la fecha actual como predeterminada
+    this.saleForm.patchValue({ saleDate: new Date().toISOString().split('T')[0] });
   }
 
   ngOnInit(): void {
@@ -64,13 +69,57 @@ export class VentasComponent implements OnInit {
     }
   }
 
+  customerIdValidator(control: AbstractControl) {
+    const customerId = control.value;
+    if (!this.existingCustomerIds.includes(customerId)) {
+      return { invalidCustomerId: true };
+    }
+    return null;
+  }
+
+  typeLunchValidator(control: AbstractControl) {
+    const validLunchTypes = ['Corriente', 'Ejecutivo'];
+    if (!validLunchTypes.includes(control.value)) {
+      return { invalidTypeLunch: true };
+    }
+    return null;
+  }
+
+  onSubmit(): void {
+    if (this.saleForm.valid) {
+      const now = new Date().toISOString(); // Establece la fecha actual
+
+      const saleData = {
+        ...this.saleForm.getRawValue(),
+        createdAt: now  // Asigna la fecha actual
+      };
+
+      if (this.isEditMode && this.selectedSaleId !== null) {
+        // Actualizar venta
+        this.saleService.updateSale(this.selectedSaleId, saleData).subscribe(() => {
+          this.loadSales();
+          this.closeModal();
+        });
+      } else {
+        // Crear nueva venta
+        this.saleService.createSale(saleData).subscribe(() => {
+          this.loadSales();
+          this.closeModal();
+        });
+      }
+    } else {
+      this.saleForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar los errores
+    }
+  }
+
   openModal(isEditMode = false): void {
     this.showModal = true;
     this.isEditMode = isEditMode;
     if (!isEditMode) {
       this.saleForm.reset({
         userId: '1',
-        statusSales: '1'
+        statusSales: '1',
+        saleDate: new Date().toISOString().split('T')[0] // Fecha actual
       });
       this.selectedSaleId = null;
     }
@@ -79,32 +128,6 @@ export class VentasComponent implements OnInit {
   closeModal(): void {
     this.showModal = false;
     this.selectedSaleId = null;
-  }
-
-  onSubmit(): void {
-    if (this.saleForm.valid) {
-      const now = new Date().toISOString(); // Establece la fecha actual
-
-      const saleData = {
-        ...this.saleForm.value,
-        createdAt: now  // Asigna la fecha actual
-      };
-
-      if (this.isEditMode && this.selectedSaleId !== null) {
-        // Actualizar venta
-        this.saleService.updateSale(this.selectedSaleId, saleData).subscribe(() => {
-          window.location.reload();
-          this.closeModal();
-        });
-        window.location.reload();
-      } else {
-        // Crear nueva venta
-        this.saleService.createSale(saleData).subscribe(() => {
-          window.location.reload();
-          this.closeModal();
-        });
-      }
-    }
   }
 
   editSale(id: number): void {
@@ -126,9 +149,18 @@ export class VentasComponent implements OnInit {
   deleteSale(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar esta venta?')) {
       this.saleService.deleteSale(id).subscribe(() => {
-        window.location.reload();
+        this.loadSales();
       });
-      window.location.reload();
+    }
+  }
+
+  // Método para calcular y establecer el total de la venta según el tipo de almuerzo
+  calculateTotalSale(): void {
+    const typeLunch = this.saleForm.get('typeLunch')?.value;
+    if (typeLunch === 'Corriente') {
+      this.saleForm.patchValue({ totalSale: 12000 });
+    } else if (typeLunch === 'Ejecutivo') {
+      this.saleForm.patchValue({ totalSale: 14000 });
     }
   }
 }
