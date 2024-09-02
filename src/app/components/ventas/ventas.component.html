@@ -19,17 +19,17 @@
         </thead>
         <tbody>
             <tr *ngFor="let sale of sales">
-                <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sale.saleId }}</td>
+                <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sale.id }}</td>
                 <td class="whitespace-nowrap">{{ sale.customerId }}</td>
                 <td class="whitespace-nowrap">{{ sale.typeLunch }}</td>
                 <td class="whitespace-nowrap">{{ sale.quantity }}</td>
                 <td class="whitespace-nowrap">{{ sale.totalSale | currency }}</td>
                 <td class="whitespace-nowrap">{{ sale.saleDate }}</td>
                 <td class="whitespace-nowrap">
-                    <button (click)="editSale(sale.saleId)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
+                    <button (click)="editSale(sale.id)" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar</button>
                 </td>
                 <td class="whitespace-nowrap">
-                    <button (click)="deleteSale(sale.saleId)" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
+                    <button (click)="deleteSale(sale.id)" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
                 </td>
             </tr>
         </tbody>

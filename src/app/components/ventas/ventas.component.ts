@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { DataTable } from "simple-datatables";
 
 interface Sale {
-  saleId: number;
+  id: number;
   customerId: number;
   typeLunch: string;
   quantity: number;
@@ -25,7 +25,7 @@ export class VentasComponent implements OnInit {
   saleForm: FormGroup;
   showModal: boolean = false;
   isEditMode: boolean = false;
-  selectedSaleId: number | null = null;
+  selectedid: number | null = null;
 
   existingCustomerIds: number[] = [1, 2, 3, 4, 5]; // Ejemplo de IDs de clientes existentes
 
@@ -94,9 +94,9 @@ export class VentasComponent implements OnInit {
         createdAt: now  // Asigna la fecha actual
       };
 
-      if (this.isEditMode && this.selectedSaleId !== null) {
+      if (this.isEditMode && this.selectedid !== null) {
         // Actualizar venta
-        this.saleService.updateSale(this.selectedSaleId, saleData).subscribe(() => {
+        this.saleService.updateSale(this.selectedid, saleData).subscribe(() => {
           this.loadSales();
           this.closeModal();
         });
@@ -121,17 +121,17 @@ export class VentasComponent implements OnInit {
         statusSales: '1',
         saleDate: new Date().toISOString().split('T')[0] // Fecha actual
       });
-      this.selectedSaleId = null;
+      this.selectedid = null;
     }
   }
 
   closeModal(): void {
     this.showModal = false;
-    this.selectedSaleId = null;
+    this.selectedid = null;
   }
 
   editSale(id: number): void {
-    this.selectedSaleId = id;
+    this.selectedid = id;
     this.saleService.getSaleById(id).subscribe((sale: Sale) => {
       this.openModal(true);
       this.saleForm.patchValue({
