@@ -142,10 +142,10 @@ export class InventariosComponent implements OnInit {
       productName: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
       unitPrice: ['', [Validators.required, Validators.min(2000), Validators.max(20000)]],
-      supplierId: ['', [Validators.required, this.supplierIdValidator.bind(this)]],
+      supplierName: ['', Validators.required], // Cambia supplierId a supplierName
       userId: ['1', Validators.required],
       statusInventory: ['1', Validators.required]
-    });
+    });    
   }
 
   ngOnInit(): void {
@@ -199,12 +199,16 @@ export class InventariosComponent implements OnInit {
   onSubmit(): void {
     if (this.inventoryForm.valid) {
       const now = new Date().toISOString();
-
+  
+      const selectedSupplier = this.suppliers.find(supplier => supplier.supplierName === this.inventoryForm.value.supplierName);
+      const supplierId = selectedSupplier ? selectedSupplier.supplierId : null;
+  
       const inventoryData = {
         ...this.inventoryForm.value,
+        supplierId, // Usa el supplierId en lugar del nombre
         createdAt: now
       };
-
+  
       if (this.isEditMode && this.selectedInventoryId !== null) {
         this.inventoryService.updateInventory(this.selectedInventoryId, inventoryData).subscribe(() => {
           this.closeModal();
@@ -217,7 +221,7 @@ export class InventariosComponent implements OnInit {
         });
       }
     }
-  }
+  }  
 
   editInventory(id: number): void {
     this.selectedInventoryId = id;
@@ -243,8 +247,8 @@ export class InventariosComponent implements OnInit {
   }
 
   supplierIdValidator(control: any) {
-    const supplierId = control.value;
-    const isValid = this.suppliers.some(supplier => supplier.supplierId === parseInt(supplierId));
-    return isValid ? null : { invalidSupplierId: true };
-  }
+    const supplierName = control.value;
+    const isValid = this.suppliers.some(supplier => supplier.supplierName === supplierName);
+    return isValid ? null : { invalidSupplierName: true };
+  }  
 }
