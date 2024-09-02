@@ -51,8 +51,6 @@ export class VentasComponent implements OnInit {
   loadSales(): void {
     this.saleService.getSales().subscribe((data: Sale[]) => {
         this.sales = data;
-
-        // Usamos setTimeout para garantizar que la tabla esté en el DOM
         setTimeout(() => {
             this.initializeDataTable();
         }, 10);
@@ -85,6 +83,16 @@ export class VentasComponent implements OnInit {
     return null;
   }
 
+  getCustomerIdErrorMessage(): string {
+    if (this.saleForm.get('customerId')?.hasError('required')) {
+      return 'Cliente ID es requerido.';
+    }
+    if (this.saleForm.get('customerId')?.hasError('invalidCustomerId')) {
+      return 'Cliente ID no es válido.';
+    }
+    return '';
+  }
+
   onSubmit(): void {
     if (this.saleForm.valid) {
       const now = new Date().toISOString(); // Establece la fecha actual
@@ -95,13 +103,11 @@ export class VentasComponent implements OnInit {
       };
 
       if (this.isEditMode && this.selectedid !== null) {
-        // Actualizar venta
         this.saleService.updateSale(this.selectedid, saleData).subscribe(() => {
           this.loadSales();
           this.closeModal();
         });
       } else {
-        // Crear nueva venta
         this.saleService.createSale(saleData).subscribe(() => {
           this.loadSales();
           this.closeModal();
@@ -156,11 +162,12 @@ export class VentasComponent implements OnInit {
 
   // Método para calcular y establecer el total de la venta según el tipo de almuerzo
   calculateTotalSale(): void {
+    const quantity = this.saleForm.get('quantity')?.value;
     const typeLunch = this.saleForm.get('typeLunch')?.value;
     if (typeLunch === 'Corriente') {
-      this.saleForm.patchValue({ totalSale: 12000 });
+      this.saleForm.patchValue({ totalSale: 12000 * quantity });
     } else if (typeLunch === 'Ejecutivo') {
-      this.saleForm.patchValue({ totalSale: 14000 });
+      this.saleForm.patchValue({ totalSale: 14000 * quantity });
     }
   }
 }
