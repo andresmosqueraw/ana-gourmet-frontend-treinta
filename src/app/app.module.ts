@@ -29,11 +29,7 @@ import { LoginComponent } from './components/login/login.component';
     HomeComponent,
     LoginComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule // Importar ReactiveFormsModule para manejar formularios reactivos
-  ],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [
     provideHttpClient(), // Configuración del HttpClient
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, // Proporciona las opciones por defecto de JWT_OPTIONS

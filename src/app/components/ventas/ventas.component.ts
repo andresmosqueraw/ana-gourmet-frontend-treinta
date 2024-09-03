@@ -45,6 +45,7 @@ export class VentasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('VentasComponent cargado'); // Log cuando el componente de ventas se carga
     this.loadSales();
   }
 

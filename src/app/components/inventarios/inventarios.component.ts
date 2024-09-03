@@ -151,6 +151,8 @@ export class InventariosComponent implements OnInit {
   ngOnInit(): void {
     this.loadInventories();
     this.loadSuppliers();
+    console.log('InventariosComponent cargado'); // Log cuando el componente de inventarios se carga
+    this.loadInventories();
   }
 
   loadInventories(): void {

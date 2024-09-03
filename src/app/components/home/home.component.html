@@ -1,14 +1,19 @@
-<div class="button-container">
-  <button routerLink="/dashboard/inventarios" class="nav-button bg-blue-500 text-white px-4 py-2 rounded">
-    Inventarios
-  </button>
-  <button routerLink="/dashboard/ventas" class="nav-button bg-green-500 text-white px-4 py-2 rounded">
-    Ventas
-  </button>
-  <button routerLink="/dashboard/proveedores" class="nav-button bg-yellow-500 text-white px-4 py-2 rounded">
-    Proveedores
-  </button>
-  <button routerLink="/dashboard/clientes" class="nav-button bg-red-500 text-white px-4 py-2 rounded">
-    Clientes
-  </button>
+<div class="container">
+  <div class="button-container">
+    <button routerLink="/dashboard/inventarios" class="nav-button bg-blue-500 text-white px-4 py-2 rounded">
+      Inventarios
+    </button>
+    <button routerLink="/dashboard/ventas" class="nav-button bg-green-500 text-white px-4 py-2 rounded">
+      Ventas
+    </button>
+    <button routerLink="/dashboard/proveedores" class="nav-button bg-yellow-500 text-white px-4 py-2 rounded">
+      Proveedores
+    </button>
+    <button routerLink="/dashboard/clientes" class="nav-button bg-red-500 text-white px-4 py-2 rounded">
+      Clientes
+    </button>
+  </div>
+
+  <!-- Coloca el router-outlet después de los botones -->
+  <router-outlet></router-outlet> <!-- Este es el punto donde se cargarán los componentes hijos -->
 </div>

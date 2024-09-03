@@ -1,14 +1,21 @@
-<div class="w-64 bg-white h-full shadow-md">
+<div class="w-64 bg-white h-full shadow-md flex flex-col justify-between">
+  <div>
     <div class="px-8 py-4">
       <h2 class="text-lg font-semibold text-gray-700">Ana Gourmet</h2>
     </div>
     <nav class="px-4 mt-6">
       <ul class="space-y-4">
-        <li><a routerLink="/home" class="block text-gray-600 hover:text-gray-900">Dashboard</a></li>
-        <li><a routerLink="/ventas" class="block text-gray-600 hover:text-gray-900">Ventas</a></li>
-        <li><a routerLink="/inventarios" class="block text-gray-600 hover:text-gray-900">Inventarios</a></li>
-        <li><a routerLink="/proveedores" class="block text-gray-600 hover:text-gray-900">Proveedores</a></li>
-        <li><a routerLink="/clientes" class="block text-gray-600 hover:text-gray-900">Clientes</a></li>
+        <li><a routerLink="/dashboard" class="block text-gray-600 hover:text-gray-900">Dashboard</a></li>
+        <li><a routerLink="/dashboard/ventas" class="block text-gray-600 hover:text-gray-900">Ventas</a></li>
+        <li><a routerLink="/dashboard/inventarios" class="block text-gray-600 hover:text-gray-900">Inventarios</a></li>
+        <li><a routerLink="/dashboard/proveedores" class="block text-gray-600 hover:text-gray-900">Proveedores</a></li>
+        <li><a routerLink="/dashboard/clientes" class="block text-gray-600 hover:text-gray-900">Clientes</a></li>
       </ul>
     </nav>
-  </div>  
+  </div>
+  <div class="px-4 py-4">
+    <button (click)="logout()" class="w-full text-left block text-gray-600 hover:text-gray-900">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+</div>

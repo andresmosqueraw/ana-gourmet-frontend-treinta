@@ -5,29 +5,26 @@ import { VentasComponent } from './components/ventas/ventas.component';
 import { InventariosComponent } from './components/inventarios/inventarios.component';
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
-import { LoginComponent } from './components/login/login.component'; // Importa el componente de login
-import { AuthGuard } from './services/authguard.services'; // Importa el guard para proteger las rutas
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './services/authguard.services';
+import { DashboardComponent } from './components/dashboard/dashboard.component'; // Importa el DashboardComponent
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirige la ruta raíz al login
-  { path: 'login', component: LoginComponent }, // Ruta para el login
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [AuthGuard], // Protege la ruta home con AuthGuard
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
-    component: HomeComponent, // Añadir un componente base para el dashboard
-    canActivate: [AuthGuard], // Protege las rutas del dashboard con AuthGuard
+    component: DashboardComponent, // Usa el DashboardComponent como contenedor para las rutas del dashboard
+    canActivate: [AuthGuard],
     children: [
+      { path: '', component: HomeComponent }, // La ruta base carga el HomeComponent
       { path: 'ventas', component: VentasComponent },
       { path: 'inventarios', component: InventariosComponent },
       { path: 'proveedores', component: ProveedoresComponent },
       { path: 'clientes', component: ClientesComponent },
     ],
   },
-  { path: '**', redirectTo: 'login', pathMatch: 'full' }, // Redirige cualquier ruta no encontrada al login
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   errorMessage: string | null = null;
@@ -20,25 +20,25 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       const token = params['token'];
       const error = params['error'];
-
+  
       if (error === 'invalid_email') {
+        console.log('Error: Correo electrónico no válido'); // Log de error
         this.errorMessage = 'Error: Correo electrónico no válido para ingreso';
       } else if (token) {
+        console.log('Token recibido:', token); // Log del token recibido
         this.handleToken(token);
       }
     });
   }
-
-  login() {
-    this.clearCookies();
-    this.authService.login();
-  }
-
-  // Método para manejar el token
-  handleToken(token: string) {
-    // Aquí puedes guardar el token en localStorage o en algún servicio para manejar el estado del usuario
+  
+  handleToken(token: string): void {
+    console.log('Almacenando token en localStorage y redirigiendo a dashboard/inventarios'); // Log antes de redirigir
     localStorage.setItem('token', token);
-    this.router.navigate(['/home']); // Redirige al usuario al home después de iniciar sesión
+    this.router.navigate(['/dashboard/inventarios']);
+  }
+  
+  login() {
+    this.authService.login(); // Redirige al usuario a la URL de autenticación
   }
 
   // Método para eliminar las cookies relevantes
