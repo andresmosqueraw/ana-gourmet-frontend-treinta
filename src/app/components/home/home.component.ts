@@ -28,32 +28,80 @@ export class HomeComponent implements OnInit {
   }
 
   // Gráfico de inventarios (Area Chart)
-  loadInventoryChart(): void {
-    this.inventoryService.getInventories().subscribe(data => {
-      const productNames = data.map(inventory => inventory.productName);
-      const quantities = data.map(inventory => inventory.quantity);
+  // Gráfico de inventarios (Bar Chart)
+loadInventoryChart(): void {
+  this.inventoryService.getInventories().subscribe(data => {
+    const productNames = data.map(inventory => inventory.productName);
+    const quantities = data.map(inventory => inventory.quantity);
 
-      const options = {
-        chart: {
-          type: 'area',
-          height: '100%',
-          maxWidth: '100%'
-        },
-        series: [
-          {
-            name: 'Cantidad en inventario',
-            data: quantities
-          }
-        ],
-        xaxis: {
-          categories: productNames
+    const options = {
+      series: [
+        {
+          name: 'Cantidad en inventario',
+          data: quantities,
+          color: "#31C48D", // Color para barras
         }
-      };
+      ],
+      chart: {
+        type: 'bar',
+        height: 400,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false, // Configuración para barras verticales
+          columnWidth: '70%',
+          borderRadius: 4
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: productNames,
+        labels: {
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssClass: 'text-xs font-normal text-gray-500 dark:text-gray-400'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: function (val: number) {
+            return val.toFixed(0);
+          },
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssClass: 'text-xs font-normal text-gray-500 dark:text-gray-400'
+          }
+        }
+      },
+      grid: {
+        show: true,
+        strokeDashArray: 4,
+        padding: {
+          left: 10,
+          right: 10
+        }
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: function (val: number) {
+            return val.toFixed(0);
+          }
+        }
+      }
+    };
 
-      const chart = new ApexCharts(document.getElementById('inventory-chart'), options);
-      chart.render();
-    });
-  }
+    const chart = new ApexCharts(document.getElementById('inventory-chart'), options);
+    chart.render();
+  });
+}
 
   // Gráfico de ventas (Line Chart)
   loadSalesChart(): void {
