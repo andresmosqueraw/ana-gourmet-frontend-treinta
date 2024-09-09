@@ -20,7 +20,7 @@ export class SupplierService {
   private createUrl = 'http://localhost:8090/api/supplier/create';
   private searchUrl = 'http://localhost:8090/api/supplier/search';
   private deleteUrl = 'http://localhost:8090/api/supplier/delete';
-  private updateUrl = 'http://localhost:8090/api/supplier/update'; // Actualizado
+  private updateUrl = 'http://localhost:8090/api/supplier/update';
 
   constructor(private http: HttpClient) { }
 

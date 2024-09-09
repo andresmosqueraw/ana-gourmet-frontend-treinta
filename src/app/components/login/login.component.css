@@ -2,7 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #fff1c0; /* Fondo amarillo claro */
+  background-color: #fff1c0;
+  /* Fondo amarillo claro */
 }
 
 .login-wrapper {
@@ -10,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  flex-direction: column; /* Alineación vertical de los elementos */
+  flex-direction: column;
 }
 
 .error-message {
@@ -20,36 +21,43 @@ body {
   border-radius: 5px;
   margin-bottom: 20px;
   text-align: center;
-  width: 80%;
-  max-width: 400px; /* Ajuste para que coincida con el ancho del contenedor de login */
+  width: 100%;
+  /* Se ajusta al tamaño del contenedor */
+  max-width: 400px;
   font-weight: bold;
   box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
 }
 
 .login-container {
-  background-color: #fff; /* Fondo blanco para el contenedor */
+  background-color: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  padding: 40px 60px; /* Espaciado interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra ligera */
+  padding: 40px;
   text-align: center;
-  max-width: 400px;
+  max-width: 500px;
+  /* Aumenta el ancho máximo del contenedor */
   width: 100%;
+  box-sizing: border-box;
+  /* Asegura que el padding no agregue más tamaño al contenedor */
 }
 
 .logo {
-  width: 100px; /* Tamaño del logo */
-  margin-bottom: 20px; /* Espacio debajo del logo */
+  width: 100px;
+  margin-bottom: 20px;
 }
 
 h2 {
-  color: #333; /* Color del texto */
-  font-size: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
+  /* Aumenta ligeramente el tamaño de la fuente */
   margin-bottom: 20px;
 }
 
 .input-field {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
+  /* Aumenta el padding para hacerlo más espacioso */
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -58,8 +66,9 @@ h2 {
 
 .login-button {
   width: 100%;
-  padding: 12px;
-  background-color: #ffc107; /* Color del botón (amarillo) */
+  padding: 15px;
+  background-color: #ffc107;
+  /* Color del botón (amarillo) */
   border: none;
   border-radius: 5px;
   font-size: 1rem;
@@ -69,24 +78,39 @@ h2 {
 }
 
 .login-button:hover {
-  background-color: #e0a800; /* Cambio de color al pasar el cursor */
+  background-color: #e0a800;
 }
 
 .google-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 10px;
-  background-color: #db4437;
-  border: none;
+  padding: 12px;
+  /* Aumenta el padding */
+  background-color: white;
+  border: 1px solid #dadce0;
   border-radius: 5px;
-  color: white;
-  font-size: 1rem;
+  font-size: 16px;
+  color: #3c4043;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  /* Añade un margen superior */
 }
 
 .google-login-button:hover {
-  background-color: #c23321;
+  background-color: #f7f8fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-login-button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 p {
