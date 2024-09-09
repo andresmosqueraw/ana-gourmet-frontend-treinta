@@ -10,6 +10,9 @@ import ApexCharts from 'apexcharts';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  totalInventory: number = 0;
+  totalSales: number = 0;
+  totalSuppliers: number = 0;
 
   constructor(
     private inventoryService: InventoryService,
@@ -21,6 +24,7 @@ export class HomeComponent implements OnInit {
     this.loadInventoryChart();
     this.loadSalesChart();
     this.loadSuppliersChart();
+    this.calculateTotals();
   }
 
   // Gráfico de inventarios (Area Chart)
@@ -86,7 +90,7 @@ export class HomeComponent implements OnInit {
       const supplierCounts = supplierProducts.reduce((acc: { [key: string]: number }, product: string) => {
         acc[product] = (acc[product] || 0) + 1;
         return acc;
-      }, {});      
+      }, {});
 
       const productNames = Object.keys(supplierCounts);
       const counts = Object.values(supplierCounts);
@@ -103,6 +107,21 @@ export class HomeComponent implements OnInit {
 
       const chart = new ApexCharts(document.getElementById('suppliers-chart'), options);
       chart.render();
+    });
+  }
+
+  // Función para calcular totales
+  calculateTotals(): void {
+    this.inventoryService.getInventories().subscribe(data => {
+      this.totalInventory = data.reduce((sum, inventory) => sum + inventory.quantity, 0);
+    });
+
+    this.saleService.getSales().subscribe(data => {
+      this.totalSales = data.reduce((sum, sale) => sum + sale.totalSale, 0);
+    });
+
+    this.supplierService.getSuppliers().subscribe(data => {
+      this.totalSuppliers = data.length;
     });
   }
 }
