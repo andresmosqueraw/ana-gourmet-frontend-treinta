@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
   totalInventory: number = 0;
   totalSales: number = 0;
   totalSuppliers: number = 0;
-
   inventories: any[] = [];  // Store inventory data here
+  suppliers: any[] = [];    // Store suppliers data here
 
   constructor(
     private inventoryService: InventoryService,
@@ -28,6 +28,19 @@ export class HomeComponent implements OnInit {
     this.loadSuppliersChart();
     this.calculateTotals();
     this.loadInventories();
+    this.loadSuppliers();  // Cargar la lista de proveedores
+  }
+
+  // Función para obtener el nombre del proveedor por su ID
+  getSupplierName(supplierId: number): string {
+    const supplier = this.suppliers.find(s => s.supplierId === supplierId);
+    return supplier ? supplier.supplierName : 'Proveedor no encontrado';
+  }
+
+  loadSuppliers(): void {
+    this.supplierService.getSuppliers().subscribe((data) => {
+      this.suppliers = data;  // Store the suppliers for rendering
+    });
   }
 
   // Gráfico de inventarios (Area Chart)

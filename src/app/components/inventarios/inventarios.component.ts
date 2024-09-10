@@ -153,6 +153,12 @@ export class InventariosComponent implements OnInit {
     this.loadSuppliers();
   }
 
+  // Función para obtener el nombre del proveedor por su ID
+  getSupplierName(supplierId: number): string {
+    const supplier = this.suppliers.find(s => s.supplierId === supplierId);
+    return supplier ? supplier.supplierName : 'Proveedor no encontrado';
+  }
+
   loadInventories(): void {
     this.inventoryService.getInventories().subscribe((data: Inventory[]) => {
         this.inventories = data;

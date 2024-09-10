@@ -22,7 +22,12 @@
                 <td class="whitespace-nowrap">{{ inventory.productName }}</td>
                 <td class="whitespace-nowrap">{{ inventory.quantity }}</td>
                 <td class="whitespace-nowrap">{{ inventory.unitPrice | currency }}</td>
-                <td class="whitespace-nowrap">{{ inventory.supplierId }}</td>
+                
+                <!-- Mostrar el nombre del proveedor en lugar del ID -->
+                <td class="whitespace-nowrap">
+                    {{ getSupplierName(inventory.supplierId) }}
+                </td>
+
                 <td class="whitespace-nowrap">{{ inventory.createdAt | date:'short' }}</td>
                 <td class="whitespace-nowrap">
                     <button (click)="editInventory(inventory.productId)" class="bg-blue-500 text-white px-2 py-1 rounded dark:bg-blue-700">Editar</button>
@@ -36,7 +41,6 @@
 </div>
 
 
-<!-- Modal para crear/editar inventario -->
 <!-- Modal para crear/editar inventario -->
 <div *ngIf="showModal" class="fixed z-10 inset-0 overflow-y-auto">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
