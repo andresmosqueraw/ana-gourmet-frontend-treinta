@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
   totalSales: number = 0;
   totalSuppliers: number = 0;
 
+  inventories: any[] = [];  // Store inventory data here
+
   constructor(
     private inventoryService: InventoryService,
     private saleService: SaleService,
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit {
     this.loadSalesChart();
     this.loadSuppliersChart();
     this.calculateTotals();
+    this.loadInventories();
   }
 
   // Gráfico de inventarios (Area Chart)
@@ -170,6 +173,12 @@ loadInventoryChart(): void {
 
     this.supplierService.getSuppliers().subscribe(data => {
       this.totalSuppliers = data.length;
+    });
+  }
+
+  loadInventories(): void {
+    this.inventoryService.getInventories().subscribe((data) => {
+      this.inventories = data;  // Store the data for rendering
     });
   }
 }
