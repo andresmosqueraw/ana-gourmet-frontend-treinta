@@ -120,6 +120,7 @@ export class ClientesComponent implements OnInit {
       this.customerService.deleteCustomer(id).subscribe(() => {
         this.loadCustomers();
       });
+      location.reload();
     }
   }
 }
