@@ -235,6 +235,7 @@ export class ProveedoresComponent implements OnInit {
       this.supplierService.deleteSupplier(id).subscribe(() => {
         window.location.reload();
       });
+      location.reload();
     }
   }
 }

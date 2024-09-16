@@ -1,19 +1,119 @@
-<div class="container">
-  <div class="button-container">
-    <button routerLink="/dashboard/inventarios" class="nav-button bg-blue-500 text-white px-4 py-2 rounded">
-      Inventarios
-    </button>
-    <button routerLink="/dashboard/ventas" class="nav-button bg-green-500 text-white px-4 py-2 rounded">
-      Ventas
-    </button>
-    <button routerLink="/dashboard/proveedores" class="nav-button bg-yellow-500 text-white px-4 py-2 rounded">
-      Proveedores
-    </button>
-    <button routerLink="/dashboard/clientes" class="nav-button bg-red-500 text-white px-4 py-2 rounded">
-      Clientes
-    </button>
+<div class="grid w-full grid-cols-1 gap-4 mt-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2">
+  <!-- Total Inventarios -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Total Inventarios</h3>
+      <span class="text-3xl font-bold leading-none text-gray-900 sm:text-4xl dark:text-white">{{ totalInventory }}</span>
+      <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400 mt-2">
+        <span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+          </svg>
+          12.5%
+        </span>
+        Desde el mes pasado
+      </p>
+    </div>
+    <div class="w-full" id="inventory-chart"></div>
   </div>
 
-  <!-- Coloca el router-outlet después de los botones -->
-  <router-outlet></router-outlet> <!-- Este es el punto donde se cargarán los componentes hijos -->
+  <!-- Total Ventas -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Total Ventas</h3>
+      <span class="text-3xl font-bold leading-none text-gray-900 sm:text-4xl dark:text-white">{{ totalSales }}</span>
+      <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400 mt-2">
+        <span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+          </svg>
+          3.4%
+        </span>
+        Desde el mes pasado
+      </p>
+    </div>
+    <div class="w-full" id="sales-chart"></div>
+  </div>
+
+  <!-- Total Proveedores -->
+  <div class="col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 2xl:col-span-2 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Total Proveedores</h3>
+      <span class="text-3xl font-bold leading-none text-gray-900 sm:text-4xl dark:text-white">{{ totalSuppliers }}</span>
+      <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400 mt-2">
+        <span class="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+          </svg>
+          5.2%
+        </span>
+        Desde el mes pasado
+      </p>
+    </div>
+    <div class="w-full" id="suppliers-chart"></div>
+  </div>
+</div>
+
+
+
+<div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 mt-8">
+  <div class="items-center justify-between lg:flex">
+    <div class="mb-4 lg:mb-0">
+      <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Lista de inventarios</h3>
+      <span class="text-base font-normal text-gray-500 dark:text-gray-400">Lista de todos los productos en el inventario</span>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="flex flex-col mt-6">
+    <div class="overflow-x-auto rounded-lg">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                  Nombre del Producto
+                </th>
+                <th class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                  Cantidad
+                </th>
+                <th class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                  Precio Unitario
+                </th>
+                <th class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                  Nombre del Proveedor
+                </th>
+                <th class="p-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-white">
+                  Estado
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800">
+              <tr *ngFor="let inventory of inventories">
+                <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ inventory.productName }}
+                </td>
+                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  {{ inventory.quantity }}
+                </td>
+                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  ${{ inventory.unitPrice }}
+                </td>
+                
+                <!-- Mostrar el nombre del proveedor en lugar del supplierId -->
+                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  {{ getSupplierName(inventory.supplierId) }}
+                </td>
+
+                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  {{ inventory.statusInventory === 1 ? 'En Stock' : 'Agotado' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
