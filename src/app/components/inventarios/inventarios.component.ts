@@ -251,7 +251,7 @@ export class InventariosComponent implements OnInit {
       this.inventoryService.deleteInventory(id).subscribe(() => {
         window.location.reload();
       });
-      location.reload();
+      window.location.reload();
     }
   }
 
