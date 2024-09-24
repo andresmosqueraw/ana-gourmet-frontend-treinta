@@ -126,13 +126,13 @@ export class VentasComponent implements OnInit {
           this.loadSales();
           this.closeModal();
         });
-        window.location.reload();
+        // window.location.reload();
       } else {
         this.saleService.createSale(saleData).subscribe(() => {
           this.loadSales();
           this.closeModal();
         });
-        window.location.reload();
+        // window.location.reload();
       }
     } else {
       this.saleForm.markAllAsTouched();
