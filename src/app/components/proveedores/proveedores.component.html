@@ -9,7 +9,7 @@
                 <th><span class="flex items-center">ID</span></th>
                 <th><span class="flex items-center">Nombre</span></th>
                 <th><span class="flex items-center">Producto</span></th>
-                <th><span class="flex items-center">Teléfono</span></th>
+                <th><span class="flex items-center">Número celular</span></th>
                 <th><span class="flex items-center">Fecha de Creación</span></th>
                 <th><span class="flex items-center">Acciones</span></th>
                 <th><span class="flex items-center">Eliminar</span></th>
@@ -48,11 +48,21 @@
                 <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                        <input formControlName="supplierName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="text" required>
+                        <input 
+                          formControlName="supplierName" 
+                          (keypress)="validateNameInput($event)" 
+                          (keypress)="validateSingleSpace($event)"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                          type="text" required>
+                      
                         <div *ngIf="supplierForm.get('supplierName')?.touched && supplierForm.get('supplierName')?.invalid" class="text-red-500">
-                            El nombre es requerido y debe contener al menos 2 caracteres solo con letras.
+                          <div *ngIf="supplierForm.get('supplierName')?.errors?.['required']">El nombre es requerido.</div>
+                          <div *ngIf="supplierForm.get('supplierName')?.errors?.['minlength']">El nombre debe contener al menos 3 caracteres.</div>
+                          <div *ngIf="supplierForm.get('supplierName')?.errors?.['pattern']">El nombre solo puede contener letras, números, guiones, guion bajo y vocales con tildes.</div>
+                          <div *ngIf="supplierForm.get('supplierName')?.errors?.['noVowel']">El nombre debe contener al menos una vocal.</div>
+                          <div *ngIf="supplierForm.get('supplierName')?.errors?.['multipleSpaces']">El nombre no puede tener múltiples espacios ni comenzar/terminar con espacio.</div>
                         </div>
-                    </div>
+                      </div>    
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Producto</label>
                         <select formControlName="supplierProduct" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
@@ -63,12 +73,21 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Teléfono</label>
-                        <input formControlName="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="number" required>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número celular contacto proveedor</label>
+                        <input 
+                          formControlName="phone" 
+                          (keypress)="onlyNumbers($event)" 
+                          (paste)="limitPaste($event)" 
+                          maxlength="10"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                          type="text" required>
+                      
                         <div *ngIf="supplierForm.get('phone')?.touched && supplierForm.get('phone')?.invalid" class="text-red-500">
-                            El número de teléfono debe contener exactamente 10 dígitos.
+                          <div *ngIf="supplierForm.get('phone')?.errors?.['pattern']">El número de celular debe contener exactamente 10 dígitos.</div>
+                          <div *ngIf="supplierForm.get('phone')?.errors?.['startsWithThree']">El número de celular debe comenzar con un '3'.</div>
                         </div>
-                    </div>
+                      </div>
+                      
                     <div class="mt-5 sm:mt-6">
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
                         <button type="button" (click)="closeModal()" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>

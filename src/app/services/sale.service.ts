@@ -18,11 +18,11 @@ interface Sale {
   providedIn: 'root'
 })
 export class SaleService {
-  private apiUrl = 'http://localhost:8100/api/sale/all';
-  private createUrl = 'http://localhost:8100/api/sale/create';
-  private searchUrl = 'http://localhost:8100/api/sale/search';
-  private deleteUrl = 'http://localhost:8100/api/sale/delete';
-  private updateUrl = 'http://localhost:8100/api/sale/update';
+  private apiUrl = 'http://localhost:8101/api/sale/all';
+  private createUrl = 'http://localhost:8101/api/sale/create';
+  private searchUrl = 'http://localhost:8101/api/sale/search';
+  private deleteUrl = 'http://localhost:8101/api/sale/delete';
+  private updateUrl = 'http://localhost:8101/api/sale/update';
 
   constructor(private http: HttpClient) { }
 

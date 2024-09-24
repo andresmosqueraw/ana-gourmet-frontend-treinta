@@ -17,11 +17,11 @@ interface Inventory {
   providedIn: 'root'
 })
 export class InventoryService {
-  private apiUrl = 'http://localhost:8110/api/inventory/all';
-  private createUrl = 'http://localhost:8110/api/inventory/create';
-  private searchUrl = 'http://localhost:8110/api/inventory/search';
-  private deleteUrl = 'http://localhost:8110/api/inventory/delete';
-  private updateUrl = 'http://localhost:8110/api/inventory/update';
+  private apiUrl = 'http://localhost:8201/api/inventory/all';
+  private createUrl = 'http://localhost:8201/api/inventory/create';
+  private searchUrl = 'http://localhost:8201/api/inventory/search';
+  private deleteUrl = 'http://localhost:8201/api/inventory/delete';
+  private updateUrl = 'http://localhost:8201/api/inventory/update';
 
   constructor(private http: HttpClient) { }
 

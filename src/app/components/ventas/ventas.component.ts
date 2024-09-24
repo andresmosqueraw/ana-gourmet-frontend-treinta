@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SaleService } from '../../services/sale.service';
+import { ClienteService } from '../../services/cliente.service';  
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataTable } from "simple-datatables";
 
 interface Sale {
   id: number;
   customerId: number;
+  customerName?: string;  // Marcar customerName como opcional si no siempre está presente
   typeLunch: string;
   quantity: number;
   totalSale: number;
@@ -22,16 +24,20 @@ interface Sale {
 })
 export class VentasComponent implements OnInit {
   sales: Sale[] = [];
+  customers: any[] = [];
   saleForm: FormGroup;
   showModal: boolean = false;
   isEditMode: boolean = false;
   selectedid: number | null = null;
 
-  existingCustomerIds: number[] = [1, 2, 3, 4, 5]; // Ejemplo de IDs de clientes existentes
-
-  constructor(private saleService: SaleService, private fb: FormBuilder) { 
+  constructor(
+    private saleService: SaleService, 
+    private clienteService: ClienteService,  
+    private fb: FormBuilder
+  ) { 
     this.saleForm = this.fb.group({
-      customerId: ['', [Validators.required, Validators.min(1), this.customerIdValidator.bind(this)]],
+      customerId: ['', [Validators.required]], 
+      customerName: ['', [Validators.required]],  // Guardar el nombre del cliente
       typeLunch: ['', [Validators.required, this.typeLunchValidator]],
       quantity: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
       totalSale: [{ value: '', disabled: true }, Validators.required],
@@ -40,39 +46,63 @@ export class VentasComponent implements OnInit {
       statusSales: ['1', Validators.required]
     });
 
-    // Establecer la fecha actual como predeterminada
     this.saleForm.patchValue({ saleDate: new Date().toISOString().split('T')[0] });
   }
 
   ngOnInit(): void {
-    this.loadSales();
-  }
-
-  loadSales(): void {
-    this.saleService.getSales().subscribe((data: Sale[]) => {
-        this.sales = data;
-        setTimeout(() => {
-            this.initializeDataTable();
-        }, 10);
+    // First, load the customers, then load the sales.
+    this.loadCustomers().then(() => {
+      this.loadSales();
     });
   }
+  
+  loadSales(): void {
+    this.saleService.getSales().subscribe((data: Sale[]) => {
+      this.sales = data.map(sale => {
+        // Find the customer by ID in the already loaded customers array
+        const customer = this.customers.find(c => {
+          console.log(c.id + "Imprimiendo c.id"); // Imprime c.id
+          
+          return c.id === sale.customerId;
+        });
+        console.log(customer);
+        console.log("Imprimiendo customer");
+        console.log(sale.customerId)
+        console.log("Imprimiendo customerID");
+        
+        const customerName = customer ? customer.name : 'Cliente no encontrado'; // Default if no match
+        // Return a sale object with the customer name included
+        return { ...sale, customerName };
+      });
+  
+      // Initialize the data table after sales are fully loaded
+      setTimeout(() => {
+        this.initializeDataTable();
+      }, 10);
+    });
+  }
+  
+  
+
+  loadCustomers(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.clienteService.getCustomers().subscribe((data: any[]) => {
+        this.customers = data; // Assign customers from the API
+        resolve();
+      }, error => reject(error));
+    });
+  }
+  
+  
 
   initializeDataTable(): void {
     const tableElement = document.getElementById("search-table") as HTMLTableElement;
     if (tableElement) {
-        const dataTable = new DataTable(tableElement, {
-            searchable: true,
-            sortable: true
-        });
+      const dataTable = new DataTable(tableElement, {
+        searchable: true,
+        sortable: true
+      });
     }
-  }
-
-  customerIdValidator(control: AbstractControl) {
-    const customerId = control.value;
-    if (!this.existingCustomerIds.includes(customerId)) {
-      return { invalidCustomerId: true };
-    }
-    return null;
   }
 
   typeLunchValidator(control: AbstractControl) {
@@ -83,25 +113,15 @@ export class VentasComponent implements OnInit {
     return null;
   }
 
-  getCustomerIdErrorMessage(): string {
-    if (this.saleForm.get('customerId')?.hasError('required')) {
-      return 'Cliente ID es requerido.';
-    }
-    if (this.saleForm.get('customerId')?.hasError('invalidCustomerId')) {
-      return 'Cliente ID no es válido.';
-    }
-    return '';
-  }
-
   onSubmit(): void {
     if (this.saleForm.valid) {
-      const now = new Date().toISOString(); // Establece la fecha actual
-
+      const now = new Date().toISOString(); 
       const saleData = {
         ...this.saleForm.getRawValue(),
-        createdAt: now  // Asigna la fecha actual
+        customerName: this.customers.find(c => c.id === this.saleForm.get('customerId')?.value)?.name,  // Asigna el nombre del cliente
+        createdAt: now
       };
-
+  
       if (this.isEditMode && this.selectedid !== null) {
         this.saleService.updateSale(this.selectedid, saleData).subscribe(() => {
           this.loadSales();
@@ -116,10 +136,10 @@ export class VentasComponent implements OnInit {
         window.location.reload();
       }
     } else {
-      this.saleForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar los errores
+      this.saleForm.markAllAsTouched();
     }
   }
-
+  
   openModal(isEditMode = false): void {
     this.showModal = true;
     this.isEditMode = isEditMode;
@@ -127,7 +147,7 @@ export class VentasComponent implements OnInit {
       this.saleForm.reset({
         userId: '1',
         statusSales: '1',
-        saleDate: new Date().toISOString().split('T')[0] // Fecha actual
+        saleDate: new Date().toISOString().split('T')[0]
       });
       this.selectedid = null;
     }
@@ -142,8 +162,13 @@ export class VentasComponent implements OnInit {
     this.selectedid = id;
     this.saleService.getSaleById(id).subscribe((sale: Sale) => {
       this.openModal(true);
+  
+      const customer = this.customers.find(c => c.id === sale.customerId);
+      const customerName = customer ? customer.name : 'Cliente no encontrado';
+  
       this.saleForm.patchValue({
         customerId: sale.customerId,
+        customerName,  
         typeLunch: sale.typeLunch,
         quantity: sale.quantity,
         totalSale: sale.totalSale,
@@ -153,6 +178,7 @@ export class VentasComponent implements OnInit {
       });
     });
   }
+  
 
   deleteSale(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar esta venta?')) {
@@ -162,7 +188,6 @@ export class VentasComponent implements OnInit {
     }
   }
 
-  // Método para calcular y establecer el total de la venta según el tipo de almuerzo
   calculateTotalSale(): void {
     const quantity = this.saleForm.get('quantity')?.value;
     const typeLunch = this.saleForm.get('typeLunch')?.value;

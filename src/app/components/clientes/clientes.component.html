@@ -7,9 +7,9 @@
         <thead>
             <tr class="text-gray-900 dark:text-white">
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Nombre del cliente</th>
                 <th>Email</th>
-                <th>Teléfono</th>
+                <th>Número celular</th>
                 <th>Fecha de Creación</th>
                 <th>Acciones</th>
                 <th>Eliminar</th>
@@ -45,26 +45,61 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-300 mb-4">{{ isEditMode ? 'Editar Cliente' : 'Crear Cliente' }}</h3>
                 <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                        <input formControlName="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="text" required>
-                        <div *ngIf="customerForm.get('name')?.touched && customerForm.get('name')?.invalid" class="text-red-500">
-                            El nombre es requerido y debe contener al menos 2 caracteres solo con letras.
-                        </div>
-                    </div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del cliente</label>
+                        <input 
+                        formControlName="name" 
+                        (keypress)="validateSingleSpace($event)" 
+                        (paste)="limitPasteName($event)" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        type="text" required>
+                    
+                        
+                          <div *ngIf="customerForm.get('name')?.touched && customerForm.get('name')?.invalid" class="text-red-500">
+                            <div *ngIf="customerForm.get('name')?.errors?.['required']">El nombre es requerido.</div>
+                            <div *ngIf="customerForm.get('name')?.errors?.['minlength']">El nombre debe contener al menos 3 letras.</div>
+                            <div *ngIf="customerForm.get('name')?.errors?.['pattern']">El nombre solo puede contener letras y espacios.</div>
+                            <div *ngIf="customerForm.get('name')?.errors?.['noVowel']">El nombre debe contener al menos una vocal.</div>
+                            <div *ngIf="customerForm.get('name')?.errors?.['multipleSpaces']">El nombre no puede tener más de un espacio entre palabras.</div>
+                          </div>
+                          
+                            
+                      </div>
+                      
+                      
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input formControlName="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="email" required>
+                        <input 
+                        formControlName="email" 
+                        (keypress)="preventSpace($event)" 
+                        (paste)="limitPasteEmail($event)" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="email" required>  
+
+                              
                         <div *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid" class="text-red-500">
-                            Ingresa un email válido.
+                            Ingresa un email válido, ejemplo: "Ejemplo&#64;gmail.com"
                         </div>
                     </div>
+                    
                     <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Teléfono</label>
-                        <input formControlName="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="text" required>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número de celular</label>
+                        <input 
+                        formControlName="phone" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        type="text" 
+                        maxlength="10" 
+                        pattern="^[0-9]*$"
+                        (keypress)="onlyNumbers($event)"
+                        (paste)="limitPaste($event)"
+                        required
+                      >
                         <div *ngIf="customerForm.get('phone')?.touched && customerForm.get('phone')?.invalid" class="text-red-500">
-                            El número de teléfono debe contener exactamente 10 dígitos.
+                            <div *ngIf="customerForm.get('phone')?.errors?.['pattern']">El número de teléfono debe contener exactamente 10 dígitos.</div>
+                            <div *ngIf="customerForm.get('phone')?.errors?.['startsWithThree']">El número de teléfono debe comenzar con un '3'.</div>
                         </div>
-                    </div>
+                      
+                      </div>
+                      
                     <div class="mt-5 sm:mt-6">
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
                         <button type="button" (click)="closeModal()" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>

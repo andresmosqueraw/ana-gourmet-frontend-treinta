@@ -2,7 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import { SupplierService } from '../../services/supplier.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataTable } from "simple-datatables";
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
+//Validación para celular
+function startsWithThree(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value || '';
+    return value.startsWith('3') ? null : { startsWithThree: true };
+  };
+}
+// Validación personalizada para asegurar que el nombre tenga al menos una vocal
+function containsVowel(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value || '';
+    const hasVowel = /[aeiouáéíóúAEIOUÁÉÍÓÚ]/.test(value);
+    return hasVowel ? null : { noVowel: true };
+  };
+}
+
+// Validación personalizada para evitar múltiples espacios consecutivos
+function singleSpaceValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value || '';
+    const hasMultipleSpaces = /\s{2,}/.test(value);
+    const startsOrEndsWithSpace = /^\s|\s$/.test(value);
+    return hasMultipleSpaces || startsOrEndsWithSpace ? { multipleSpaces: true } : null;
+  };
+}
 interface Supplier {
   supplierId: number;
   supplierName: string;
@@ -128,114 +154,164 @@ export class ProveedoresComponent implements OnInit {
     { "id": 100, "name": "Cilantro" }
 ];
 
+constructor(private fb: FormBuilder, private supplierService: SupplierService) { 
+  this.supplierForm = this.fb.group({
+    supplierName: ['', [
+      Validators.required, 
+      Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ _\-&\/]+$/),  // Permitir caracteres válidos
+      Validators.minLength(3),
+      containsVowel(),  // Al menos una vocal
+      singleSpaceValidator()  // No permitir múltiples espacios
+    ]],
+    supplierProduct: ['', Validators.required],
+    phone: ['', [
+      Validators.required, 
+      Validators.pattern(/^\d{10}$/),  // Validación para que tenga exactamente 10 dígitos
+      startsWithThree()  // Verifica que el teléfono comience con un '3'
+    ]],
+    userId: ['1', Validators.required],
+    statusSupplier: ['1', Validators.required]
+  });
+}
+ngOnInit(): void {
+  this.loadSuppliers();
+}
 
-  constructor(private supplierService: SupplierService, private fb: FormBuilder) { 
-    this.supplierForm = this.fb.group({
-      supplierName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/), Validators.minLength(2)]], // Min 2 caracteres
-      supplierProduct: ['', Validators.required], // Select con productos
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validación de 10 dígitos para el teléfono
-      userId: ['1', Validators.required],  // Valor por defecto
-      statusSupplier: ['1', Validators.required]  // Valor por defecto
-    });
-  }
+loadSuppliers(): void {
+  this.supplierService.getSuppliers().subscribe((data: Supplier[]) => {
+      this.suppliers = data;
 
-  ngOnInit(): void {
-    this.loadSuppliers();
-  }
+      setTimeout(() => {
+          this.initializeDataTable();
+      }, 10);
+  });
+}
 
-  loadSuppliers(): void {
-    this.supplierService.getSuppliers().subscribe((data: Supplier[]) => {
-        this.suppliers = data;
-
-        // Usamos setTimeout para garantizar que la tabla esté en el DOM
-        setTimeout(() => {
-            this.initializeDataTable();
-        }, 10);
-    });
-  }
-
-  initializeDataTable(): void {
-    const tableElement = document.getElementById("search-table") as HTMLTableElement;
-    if (tableElement) {
-        const dataTable = new DataTable(tableElement, {
-            searchable: true,
-            sortable: true
-        });
-    }
-  }
-
-  openModal(isEditMode = false): void {
-    this.showModal = true;
-    this.isEditMode = isEditMode;
-    if (!isEditMode) {
-      this.supplierForm.reset({
-        userId: '1',
-        statusSupplier: '1'
+initializeDataTable(): void {
+  const tableElement = document.getElementById("search-table") as HTMLTableElement;
+  if (tableElement) {
+      const dataTable = new DataTable(tableElement, {
+          searchable: true,
+          sortable: true
       });
-      this.selectedSupplierId = null;
-    }
   }
+}
 
-  closeModal(): void {
-    this.showModal = false;
+openModal(isEditMode = false): void {
+  this.showModal = true;
+  this.isEditMode = isEditMode;
+  if (!isEditMode) {
+    this.supplierForm.reset({
+      userId: '1',
+      statusSupplier: '1'
+    });
     this.selectedSupplierId = null;
   }
+}
 
-  onSubmit(): void {
-    if (this.supplierForm.valid) {
-      const now = new Date().toISOString(); // Establece la fecha actual
+closeModal(): void {
+  this.showModal = false;
+  this.selectedSupplierId = null;
+}
 
-      const supplierData = {
-        ...this.supplierForm.value,
-        createdAt: now  // Asigna la fecha actual
-      };
+// Envío de formulario
+onSubmit(): void {
+  if (this.supplierForm.valid) {
+    const now = new Date().toISOString(); // Establece la fecha actual
+    const supplierData = {
+      ...this.supplierForm.value,
+      createdAt: now  // Asigna la fecha actual
+    };
 
-      if (this.isEditMode && this.selectedSupplierId !== null) {
-        // Actualizar proveedor
-        this.supplierService.updateSupplier(this.selectedSupplierId, supplierData).subscribe(() => {
-
-          this.loadSuppliers();
-
-          this.closeModal();
-        });
-        window.location.reload();
-      } else {
-        // Crear nuevo proveedor
-        this.supplierService.createSupplier(supplierData).subscribe(() => {
-
-          this.loadSuppliers();
-
-          this.closeModal();
-          window.location.reload();
-        });
-        window.location.reload();
-      }
-    } else {
-      // Marcar todos los campos como tocados para mostrar los mensajes de error
-      this.supplierForm.markAllAsTouched();
-    }
-  }
-
-  editSupplier(id: number): void {
-    this.selectedSupplierId = id;
-    this.supplierService.getSupplierById(id).subscribe((supplier: Supplier) => {
-      this.openModal(true);
-      this.supplierForm.patchValue({
-        supplierName: supplier.supplierName,
-        supplierProduct: supplier.supplierProduct,
-        phone: supplier.phone,
-        userId: supplier.userId,
-        statusSupplier: supplier.statusSupplier
+    if (this.isEditMode && this.selectedSupplierId !== null) {
+      // Actualizar proveedor
+      this.supplierService.updateSupplier(this.selectedSupplierId, supplierData).subscribe(() => {
+        this.loadSuppliers();
+        this.closeModal();
       });
-    });
-  }
-
-  deleteSupplier(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
-      this.supplierService.deleteSupplier(id).subscribe(() => {
-        window.location.reload();
+      window.location.reload();
+    } else {
+      // Crear nuevo proveedor
+      this.supplierService.createSupplier(supplierData).subscribe(() => {
+        this.loadSuppliers();
+        this.closeModal();
       });
       window.location.reload();
     }
+  } else {
+    this.supplierForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar errores
   }
 }
+
+editSupplier(id: number): void {
+  this.selectedSupplierId = id;
+  this.supplierService.getSupplierById(id).subscribe((supplier: Supplier) => {
+    this.openModal(true);
+    this.supplierForm.patchValue({
+      supplierName: supplier.supplierName,
+      supplierProduct: supplier.supplierProduct,
+      phone: supplier.phone,
+      userId: supplier.userId,
+      statusSupplier: supplier.statusSupplier
+    });
+  });
+}
+
+deleteSupplier(id: number): void {
+  if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
+    this.supplierService.deleteSupplier(id).subscribe(() => {
+      this.loadSuppliers();
+    });
+    window.location.reload();
+  }
+}
+
+// Prevenir múltiples espacios al escribir
+validateSingleSpace(event: KeyboardEvent): void {
+  const input = event.target as HTMLInputElement;
+  const lastChar = input.value[input.value.length - 1];
+
+  // Si el último carácter es un espacio y el nuevo carácter también es un espacio, prevenir la entrada
+  if (lastChar === ' ' && event.key === ' ') {
+    event.preventDefault();
+  }
+}
+
+// Prevenir entrada de caracteres no numéricos en teléfono
+onlyNumbers(event: KeyboardEvent): boolean {
+  const charCode = event.which ? event.which : event.keyCode;
+
+  // Permitir solo números (códigos ASCII de 48 a 57) y teclas especiales como Backspace (8)
+  if (charCode < 48 || charCode > 57) {
+    event.preventDefault();
+    return false;
+  }
+  return true;
+}
+
+// Limitar el pegado de texto en el campo de teléfono
+limitPaste(event: ClipboardEvent): void {
+  const input = event.target as HTMLInputElement;
+  const pastedText = event.clipboardData?.getData('text') || '';
+  
+  // Permitir solo números y asegurarse de que el texto pegado no exceda 10 caracteres
+  if (!/^[0-9]*$/.test(pastedText) || pastedText.length + input.value.length > 10) {
+    event.preventDefault();
+  }
+}
+
+// Validar entrada de nombre para permitir solo caracteres válidos
+validateNameInput(event: KeyboardEvent): void {
+  const charCode = event.key.charCodeAt(0);
+  
+  // Expresión regular que permite letras, números, guiones, vocales con tildes, espacio y algunos caracteres especiales (&_/)
+  const allowedChars = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ _\-&\/]$/;
+
+  // Si el carácter no coincide con el patrón permitido, prevenir la entrada
+  if (!allowedChars.test(event.key)) {
+    event.preventDefault();
+  }
+}
+}
+
+
