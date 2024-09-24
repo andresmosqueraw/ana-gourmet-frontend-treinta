@@ -37,14 +37,13 @@ export class VentasComponent implements OnInit {
   ) { 
     this.saleForm = this.fb.group({
       customerId: ['', [Validators.required]], 
-      customerName: ['', [Validators.required]],  // Guardar el nombre del cliente
       typeLunch: ['', [Validators.required, this.typeLunchValidator]],
       quantity: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
       totalSale: [{ value: '', disabled: true }, Validators.required],
-      saleDate: [{ value: '', disabled: true }, Validators.required],
+      saleDate: [{ value: '', disabled: false }, Validators.required], // Puedes habilitar para permitir la fecha de venta
       userId: ['1', Validators.required],
       statusSales: ['1', Validators.required]
-    });
+    });    
 
     this.saleForm.patchValue({ saleDate: new Date().toISOString().split('T')[0] });
   }
