@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -12,8 +13,8 @@ import { InventariosComponent } from './components/inventarios/inventarios.compo
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { HomeComponent } from './components/home/home.component';
-import { provideHttpClient } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';  // Correctamente importado
 
 @NgModule({
   declarations: [
@@ -31,9 +32,18 @@ import { LoginComponent } from './components/login/login.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule // <--- Agregar ReactiveFormsModule aquí
+    ReactiveFormsModule,
+    HttpClientModule   
   ],
-  providers: [provideHttpClient()],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

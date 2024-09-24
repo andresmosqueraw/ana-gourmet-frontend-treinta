@@ -6,11 +6,16 @@ import { VentasComponent } from './components/ventas/ventas.component';
 import { InventariosComponent } from './components/inventarios/inventarios.component';
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
+import { LoginComponent } from './components/login/login.component'; // Importa el LoginComponent
+import { AuthGuard } from './services/Authguard.service'; // Importa el AuthGuard
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirige la ruta raíz al login
+  { path: 'login', component: LoginComponent }, // Ruta para el componente de login
   {
-    path: '',
+    path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard], // Protege el dashboard con AuthGuard
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -20,6 +25,8 @@ const routes: Routes = [
       { path: 'clientes', component: ClientesComponent },
     ],
   },
+  { path: '**', redirectTo: '/login' },
+  
 ];
 
 @NgModule({

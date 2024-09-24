@@ -1,8 +1,9 @@
-<div class="w-64 bg-white dark:bg-gray-800 h-full shadow-md">
+<div class="w-64 bg-white dark:bg-gray-800 h-full shadow-md flex flex-col">
   <div class="px-8 py-4">
     <h2 class="text-lg font-semibold text-gray-700 dark:text-white">Ana Gourmet</h2>
   </div>
-  <nav class="px-4 mt-6">
+  
+  <nav class="px-4 mt-6 flex-grow">
     <ul class="space-y-4">
       <li><a routerLink="/home" class="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Dashboard</a></li>
       <li><a routerLink="/ventas" class="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Ventas</a></li>
@@ -11,4 +12,11 @@
       <li><a routerLink="/clientes" class="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Clientes</a></li>
     </ul>
   </nav>
+  
+  <!-- Botón de cerrar sesión en la parte inferior -->
+  <div class="px-4 py-6">
+    <button (click)="logout()" class="w-full text-left block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+      Cerrar sesión
+    </button>
+  </div>
 </div>

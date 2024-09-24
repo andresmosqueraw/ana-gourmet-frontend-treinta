@@ -25,8 +25,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Verificar parámetros de la URL
+// login.component.ts
+
+ngOnInit(): void {
+  if (this.authService.isAuthenticated()) {
+    this.router.navigate(['/dashboard']);
+  } else {
     this.route.queryParams.subscribe((params) => {
       const token = params['token'];
       const error = params['error'];
@@ -38,12 +42,16 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+}
 
-  // Guardar token y redirigir
-  handleToken(token: string): void {
-    localStorage.setItem('token', token);
-    this.router.navigate(['/dashboard/inventarios']);
-  }
+
+
+handleToken(token: string): void {
+  localStorage.setItem('token', token);
+  const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+  this.router.navigate([returnUrl]);
+}
+
 
   // Iniciar sesión con Google
   loginWithGoogle(): void {
@@ -60,13 +68,19 @@ export class LoginComponent implements OnInit {
           this.handleToken(token);
         },
         error: (error) => {
-          this.errorMessage = 'Error: correo o contraseña incorrectos';
+          // Maneja el error según la respuesta del backend
+          if (error.status === 401) {
+            this.errorMessage = 'Error: correo o contraseña incorrectos';
+          } else {
+            this.errorMessage = 'Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.';
+          }
         },
       });
     } else {
       this.errorMessage = 'Por favor, ingrese un correo y contraseña válidos';
     }
   }
+  
 
   // Método para eliminar las cookies
   clearCookies(): void {
