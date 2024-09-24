@@ -214,6 +214,10 @@ closeModal(): void {
   this.selectedSupplierId = null;
 }
 
+reloadPage(): void {
+  window.location.reload();
+}
+
 // Envío de formulario
 onSubmit(): void {
   if (this.supplierForm.valid) {
@@ -228,15 +232,15 @@ onSubmit(): void {
       this.supplierService.updateSupplier(this.selectedSupplierId, supplierData).subscribe(() => {
         this.loadSuppliers();
         this.closeModal();
+        this.reloadPage(); // Usar el método en lugar de window.location.reload()
       });
-      window.location.reload();
     } else {
       // Crear nuevo proveedor
       this.supplierService.createSupplier(supplierData).subscribe(() => {
         this.loadSuppliers();
         this.closeModal();
+        this.reloadPage(); // Usar el método en lugar de window.location.reload()
       });
-      window.location.reload();
     }
   } else {
     this.supplierForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar errores
@@ -261,8 +265,8 @@ deleteSupplier(id: number): void {
   if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
     this.supplierService.deleteSupplier(id).subscribe(() => {
       this.loadSuppliers();
+      this.reloadPage(); // Usar el método en lugar de window.location.reload()
     });
-    window.location.reload();
   }
 }
 
@@ -279,10 +283,10 @@ validateSingleSpace(event: KeyboardEvent): void {
 
 // Prevenir entrada de caracteres no numéricos en teléfono
 onlyNumbers(event: KeyboardEvent): boolean {
-  const charCode = event.which ? event.which : event.keyCode;
+  const key = event.key;
 
-  // Permitir solo números (códigos ASCII de 48 a 57) y teclas especiales como Backspace (8)
-  if (charCode < 48 || charCode > 57) {
+  // Permitir solo números del 0 al 9
+  if (!/^\d$/.test(key)) {
     event.preventDefault();
     return false;
   }
