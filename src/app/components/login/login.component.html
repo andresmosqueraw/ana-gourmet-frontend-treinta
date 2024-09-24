@@ -1,0 +1,22 @@
+<div class="login-wrapper">
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <div class="login-container">
+      <img src="../../assets/Logo.png" alt="Ana Gourmet Logo" class="logo" />
+      <h2>Bienvenido a Anagourmet Administrator</h2>
+  
+      <!-- Formulario de correo y contraseña -->
+      <form [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
+        <input formControlName="email" type="email" placeholder="Ingresar correo electrónico" class="input-field" />
+        <input formControlName="password" type="password" placeholder="Ingresar contraseña" class="input-field" />
+        <button type="submit" class="login-button">Iniciar sesión</button>
+      </form>
+  
+      <!-- Botón de login con Google -->
+      <button class="google-login-button" (click)="loginWithGoogle()">Iniciar sesión con Google</button>
+      <p>Por favor inicia sesión con tu cuenta administrativa</p>
+    </div>
+  </div>
+  
