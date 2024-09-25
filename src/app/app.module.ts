@@ -14,7 +14,8 @@ import { ProveedoresComponent } from './components/proveedores/proveedores.compo
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';  // Correctamente importado
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { OAuth2CallbackComponent } from './components/o-auth2-callback/o-auth2-callback.component';  // Correctamente importado
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';  // Correcta
     ProveedoresComponent,
     ClientesComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    OAuth2CallbackComponent
   ],
   imports: [
     BrowserModule,

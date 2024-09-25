@@ -25,32 +25,35 @@ export class LoginComponent implements OnInit {
     });
   }
 
-// login.component.ts
+
 
 ngOnInit(): void {
   if (this.authService.isAuthenticated()) {
-    this.router.navigate(['/dashboard']);
-  } else {
-    this.route.queryParams.subscribe((params) => {
-      const token = params['token'];
-      const error = params['error'];
-
-      if (error === 'invalid_email') {
-        this.errorMessage = 'Error: Correo electrónico no válido para ingreso';
-      } else if (token) {
-        this.handleToken(token);
-      }
-    });
+    this.router.navigate(['/home']);
   }
-}
 
+  this.route.queryParams.subscribe((params) => {
+    const error = params['error'];
+
+    if (error === 'invalid_email') {
+      this.errorMessage = 'Error: Correo electrónico no válido para ingreso';
+    } else if (error === 'expired_or_invalid_token') {
+      this.errorMessage = 'Tu sesión ha expirado o el token es inválido. Por favor, inicia sesión nuevamente.';
+    } else if (error === 'invalid_token') {
+      this.errorMessage = 'Error al procesar el token de autenticación. Por favor, intenta iniciar sesión nuevamente.';
+    }
+  });
+}
 
 
 handleToken(token: string): void {
   localStorage.setItem('token', token);
+
+  // Redirigir al usuario a la ruta que intentaba acceder antes de iniciar sesión
   const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
   this.router.navigate([returnUrl]);
 }
+
 
 
   // Iniciar sesión con Google
@@ -87,4 +90,11 @@ handleToken(token: string): void {
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     localStorage.removeItem('token');
   }
+ 
+
+handleLoginSuccess(): void {
+  const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+  this.router.navigate([returnUrl]);
+}
+
 }
