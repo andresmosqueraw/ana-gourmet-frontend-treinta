@@ -8,8 +8,8 @@ import { Router } from '@angular/router'; // Asegúrate de importar el Router
   providedIn: 'root',
 })
 export class AuthService {
-  private googleOAuthUrl = 'http://localhost:8150/oauth2/authorization/google'; // URL para Google OAuth2
-  private loginUrl = 'http://localhost:8150/auth/login'; // URL para login con correo y contraseña
+  private googleOAuthUrl = 'http://35.188.66.64:8150/oauth2/authorization/google'; // URL para Google OAuth2
+  private loginUrl = 'http://35.188.66.64:8150/auth/login'; // URL para login con correo y contraseña
 
   constructor(
     private http: HttpClient,
