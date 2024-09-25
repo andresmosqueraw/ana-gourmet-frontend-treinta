@@ -124,14 +124,14 @@ export class ClientesComponent implements OnInit {
           this.loadCustomers();
           this.closeModal();
           // Recargar la página después de actualizar
-          window.location.reload();
+          // window.location.reload();
         });
       } else {
         this.customerService.createCustomer(customerData).subscribe(() => {
           this.loadCustomers();
           this.closeModal();
         });
-        window.location.reload();
+        // window.location.reload();
       }
     } else {
       this.customerForm.markAllAsTouched();
@@ -157,7 +157,7 @@ export class ClientesComponent implements OnInit {
       this.customerService.deleteCustomer(id).subscribe(() => {
         this.loadCustomers();
       });
-      window.location.reload();
+      // window.location.reload();
     }
   }
 

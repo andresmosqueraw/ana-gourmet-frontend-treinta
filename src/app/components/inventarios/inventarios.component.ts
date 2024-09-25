@@ -218,15 +218,15 @@ export class InventariosComponent implements OnInit {
       if (this.isEditMode && this.selectedInventoryId !== null) {
         this.inventoryService.updateInventory(this.selectedInventoryId, inventoryData).subscribe(() => {
           this.closeModal();
-          window.location.reload();
+          // window.location.reload();
         });
-        window.location.reload();
+        // window.location.reload();
       } else {
         this.inventoryService.createInventory(inventoryData).subscribe(() => {
           this.closeModal();
-          window.location.reload();
+          // window.location.reload();
         });
-        window.location.reload();
+        // window.location.reload();
       }
     }
   }  
@@ -249,9 +249,9 @@ export class InventariosComponent implements OnInit {
   deleteInventory(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar este inventario?')) {
       this.inventoryService.deleteInventory(id).subscribe(() => {
-        window.location.reload();
+        // window.location.reload();
       });
-      window.location.reload();
+      // window.location.reload();
     }
   }
 
