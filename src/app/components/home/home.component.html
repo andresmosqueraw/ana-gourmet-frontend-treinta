@@ -36,7 +36,7 @@
   </div>
 
   <!-- Total Proveedores -->
-  <div class="col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 2xl:col-span-2 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
     <div class="w-full">
       <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Total Proveedores</h3>
       <span class="text-3xl font-bold leading-none text-gray-900 sm:text-4xl dark:text-white">{{ totalSuppliers }}</span>
@@ -52,8 +52,47 @@
     </div>
     <div class="w-full" id="suppliers-chart"></div>
   </div>
-</div>
 
+  <!-- Gráfico de ventas por día de la semana -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Ventas por Día de la Semana</h3>
+      <div class="w-full" id="sales-by-day-chart"></div>
+    </div>
+  </div>
+
+  <!-- Gráfico de crecimiento de proveedores por mes -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Crecimiento de Proveedores por Mes</h3>
+      <div class="w-full" id="supplier-growth-chart"></div>
+    </div>
+  </div>
+
+  <!-- Gráfico de cantidad total vendida por tipo de producto -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Cantidad Total Vendida por Tipo de Producto</h3>
+      <div class="w-full" id="sales-by-product-chart"></div>
+    </div>
+  </div>
+
+  <!-- Gráfico de distribución de ventas por cliente -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Distribución de Ventas por Cliente</h3>
+      <div class="w-full" id="sales-by-customer-chart"></div>
+    </div>
+  </div>
+
+  <!-- Gráfico de productos con mayor inventario -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1 items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-8 dark:bg-gray-800">
+    <div class="w-full">
+      <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Productos con Mayor Inventario</h3>
+      <div class="w-full" id="top-inventory-products-chart"></div>
+    </div>
+  </div>
+</div>
 
 
 <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 mt-8">
