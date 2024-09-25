@@ -38,7 +38,7 @@ ngOnInit(): void {
     if (error === 'invalid_email') {
       this.errorMessage = 'Error: Correo electrónico no válido para ingreso';
     } else if (error === 'expired_or_invalid_token') {
-      this.errorMessage = 'Tu sesión ha expirado o el token es inválido. Por favor, inicia sesión nuevamente.';
+      this.errorMessage = 'Tu sesión ha expirado o el correo electrónico no es válido. Por favor, inicia sesión nuevamente.';
     } else if (error === 'invalid_token') {
       this.errorMessage = 'Error al procesar el token de autenticación. Por favor, intenta iniciar sesión nuevamente.';
     }
