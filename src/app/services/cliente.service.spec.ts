@@ -15,11 +15,11 @@ interface Cliente {
 describe('ClienteService', () => {
   let service: ClienteService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://35.188.66.64:8080/api/customer/all';
-  const createUrl = 'http://35.188.66.64:8080/api/customer/create';
-  const searchUrl = 'http://35.188.66.64:8080/api/customer/search';
-  const deleteUrl = 'http://35.188.66.64:8080/api/customer/delete';
-  const updateUrl = 'http://35.188.66.64:8080/api/customer/update';
+  const apiUrl = 'http://35.188.66.64:8100/api/customer/all';
+  const createUrl = 'http://35.188.66.64:8100/api/customer/create';
+  const searchUrl = 'http://35.188.66.64:8100/api/customer/search';
+  const deleteUrl = 'http://35.188.66.64:8100/api/customer/delete';
+  const updateUrl = 'http://35.188.66.64:8100/api/customer/update';
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -16,11 +16,11 @@ interface Supplier {
   providedIn: 'root'
 })
 export class SupplierService {
-  private apiUrl = 'http://localhost:8090/api/supplier/all';
-  private createUrl = 'http://localhost:8090/api/supplier/create';
-  private searchUrl = 'http://localhost:8090/api/supplier/search';
-  private deleteUrl = 'http://localhost:8090/api/supplier/delete';
-  private updateUrl = 'http://localhost:8090/api/supplier/update'; // Actualizado
+  private apiUrl = 'http://35.188.66.64:8090/api/supplier/all';
+  private createUrl = 'http://35.188.66.64:8090/api/supplier/create';
+  private searchUrl = 'http://35.188.66.64:8090/api/supplier/search';
+  private deleteUrl = 'http://35.188.66.64:8090/api/supplier/delete';
+  private updateUrl = 'http://35.188.66.64:8090/api/supplier/update'; // Actualizado
 
   constructor(private http: HttpClient) { }
 

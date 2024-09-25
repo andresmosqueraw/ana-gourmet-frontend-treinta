@@ -16,11 +16,11 @@ interface Cliente {
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'http://localhost:8100/api/customer/all';
-  private createUrl = 'http://localhost:8100/api/customer/create';
-  private searchUrl = 'http://localhost:8100/api/customer/search';
-  private deleteUrl = 'http://localhost:8100/api/customer/delete';
-  private updateUrl = 'http://localhost:8100/api/customer/update';
+  private apiUrl = 'http://35.188.66.64:8100/api/customer/all';
+  private createUrl = 'http://35.188.66.64:8100/api/customer/create';
+  private searchUrl = 'http://35.188.66.64:8100/api/customer/search';
+  private deleteUrl = 'http://35.188.66.64:8100/api/customer/delete';
+  private updateUrl = 'http://35.188.66.64:8100/api/customer/update';
 
 
   constructor(private http: HttpClient) { }

@@ -16,11 +16,11 @@ interface Inventory {
 describe('InventoryService', () => {
   let service: InventoryService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://35.188.66.64:8080/api/inventory/all';
-  const createUrl = 'http://35.188.66.64:8080/api/inventory/create';
-  const searchUrl = 'http://35.188.66.64:8080/api/inventory/search';
-  const deleteUrl = 'http://35.188.66.64:8080/api/inventory/delete';
-  const updateUrl = 'http://35.188.66.64:8080/api/inventory/update';
+  const apiUrl = 'http://35.188.66.64:8201/api/inventory/all';
+  const createUrl = 'http://35.188.66.64:8201/api/inventory/create';
+  const searchUrl = 'http://35.188.66.64:8201/api/inventory/search';
+  const deleteUrl = 'http://35.188.66.64:8201/api/inventory/delete';
+  const updateUrl = 'http://35.188.66.64:8201/api/inventory/update';
 
   beforeEach(() => {
     TestBed.configureTestingModule({

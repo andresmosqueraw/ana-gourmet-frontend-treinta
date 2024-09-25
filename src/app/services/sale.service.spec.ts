@@ -17,11 +17,11 @@ interface Sale {
 describe('SaleService', () => {
   let service: SaleService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://localhost:8101/api/sale/all';
-  const createUrl = 'http://localhost:8101/api/sale/create';
-  const searchUrl = 'http://localhost:8101/api/sale/search';
-  const deleteUrl = 'http://localhost:8101/api/sale/delete';
-  const updateUrl = 'http://localhost:8101/api/sale/update';
+  const apiUrl = 'http://35.188.66.64:8101/api/sale/all';
+  const createUrl = 'http://35.188.66.64:8101/api/sale/create';
+  const searchUrl = 'http://35.188.66.64:8101/api/sale/search';
+  const deleteUrl = 'http://35.188.66.64:8101/api/sale/delete';
+  const updateUrl = 'http://35.188.66.64:8101/api/sale/update';
 
   beforeEach(() => {
     TestBed.configureTestingModule({

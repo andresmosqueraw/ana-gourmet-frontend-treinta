@@ -15,11 +15,11 @@ interface Supplier {
 describe('SupplierService', () => {
   let service: SupplierService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://35.188.66.64:8080/api/supplier/all';
-  const createUrl = 'http://35.188.66.64:8080/api/supplier/create';
-  const searchUrl = 'http://35.188.66.64:8080/api/supplier/search';
-  const deleteUrl = 'http://35.188.66.64:8080/api/supplier/delete';
-  const updateUrl = 'http://35.188.66.64:8080/api/supplier/update';
+  const apiUrl = 'http://35.188.66.64:8090/api/supplier/all';
+  const createUrl = 'http://35.188.66.64:8090/api/supplier/create';
+  const searchUrl = 'http://35.188.66.64:8090/api/supplier/search';
+  const deleteUrl = 'http://35.188.66.64:8090/api/supplier/delete';
+  const updateUrl = 'http://35.188.66.64:8090/api/supplier/update';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
